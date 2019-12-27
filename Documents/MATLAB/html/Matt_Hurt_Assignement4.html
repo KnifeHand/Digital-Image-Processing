@@ -1,0 +1,389 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Assignment 4</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-10-25"><meta name="DC.source" content="Matt_Hurt_Assignement4.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Assignment 4</h1><!--introduction--><p>Requirements:</p><pre class="language-matlab">1.  Generate <span class="string">a</span> <span class="string">256x256</span> <span class="string">grayscale</span> <span class="string">image</span> <span class="string">with</span> <span class="string">only</span> <span class="string">two</span> <span class="string">different</span>
+intensity <span class="string">levels</span> <span class="string">(0.4 and 0.7 within the range [0-1]).</span>  <span class="string">The</span> <span class="string">intensity</span>
+of <span class="string">the</span> <span class="string">center</span> <span class="string">part</span> <span class="string">(the distance between the pixel and the center point</span>
+&lt; 80 pixels) of <span class="string">the</span> <span class="string">image</span> <span class="string">is</span> <span class="string">set</span> <span class="string">to</span> <span class="string">0.4</span> <span class="string">and</span> <span class="string">the</span> <span class="string">intesity</span> <span class="string">of</span> <span class="string">the</span> <span class="string">left</span>
+part <span class="string">of</span> <span class="string">the</span> <span class="string">image</span> <span class="string">is</span> <span class="string">set</span> <span class="string">to</span> <span class="string">be</span> <span class="string">0.7.</span>
+</pre><pre class="language-matlab">2.  Generate <span class="string">three</span> <span class="string">types</span> <span class="string">of</span> <span class="string">noises</span>
+    1. Gaussian <span class="string">noise</span> <span class="string">with</span> <span class="string">mean</span> <span class="string">0</span> <span class="string">and</span> <span class="string">variance</span> <span class="string">0.01</span>
+    2. Uniform <span class="string">noise</span> <span class="string">with</span> <span class="string">range</span> <span class="string">[-0.05 to 0.05]</span>
+    3. Salt <span class="string">and</span> <span class="string">pepper</span> <span class="string">noise</span> <span class="string">with</span> <span class="string">d</span> <span class="string">=</span> <span class="string">0.02</span> <span class="string">(2</span><span class="comment">% of pixels get affected</span>
+    by <span class="string">S&amp;P</span> <span class="string">noise)</span>
+</pre><pre class="language-matlab">3.  Add <span class="string">the</span> <span class="string">three</span> <span class="string">types</span> <span class="string">of</span> <span class="string">noises</span> <span class="string">to</span> <span class="string">the</span> <span class="string">grayscale</span> <span class="string">image.</span> <span class="string">Include</span> <span class="string">the</span>
+noisy <span class="string">images</span> <span class="string">and</span> <span class="string">the</span> <span class="string">histogram</span> <span class="string">of</span> <span class="string">the</span> <span class="string">noisy</span> <span class="string">images.</span>
+</pre><pre class="language-matlab">4.  Select <span class="string">proper</span> <span class="string">type</span> <span class="string">of</span> <span class="string">filter</span> <span class="string">and</span> <span class="string">use</span> <span class="string">them</span> <span class="string">to</span> <span class="string">restore</span> <span class="string">the</span> <span class="string">noisy</span>
+images.  Include the <span class="string">restoration</span> <span class="string">results</span> <span class="string">and</span> <span class="string">discussions</span> <span class="string">of</span>
+filtering <span class="string">approach.</span>
+</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Clear all variables from Workspace</a></li><li><a href="#2">Generate image with a circle</a></li><li><a href="#3">Generate Uniform Noise</a></li><li><a href="#4">Generate Gaussian noise with mean 0 and variance 0.01</a></li><li><a href="#5">Generate Salt and Pepper Noise</a></li><li><a href="#6">Cornermtric function C=cornermetric(f, method, param1, val1, param2, val2)</a></li><li><a href="#7">NOTES</a></li></ul></div><h2 id="1">Clear all variables from Workspace</h2><pre class="codeinput">clear <span class="string">all</span>;
+clc;
+</pre><h2 id="2">Generate image with a circle</h2><pre class="codeinput">R = 80;
+circle = double(zeros(256));
+<span class="keyword">for</span> i=1:256
+    <span class="keyword">for</span> j=1:256
+        <span class="keyword">if</span> sqrt((i-128)^2+(j-128)^2) &lt; R
+        circle(i,j) = .4;
+        <span class="keyword">else</span>
+        circle(i,j) = .7;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="comment">%imshow(circle);</span>
+</pre><h2 id="3">Generate Uniform Noise</h2><pre class="codeinput"><span class="comment">%[r, c] = size(256);</span>
+uniformNoise = circle + [rand(256)*.1-.05];
+<span class="comment">%imshow(uniformNoise);</span>
+
+<span class="comment">% Uniform filter</span>
+uniformFilter = fspecial(<span class="string">'average'</span>, 3);
+uniformsmoothed=filter2(uniformFilter, uniformNoise);
+<span class="comment">%Image preview 1</span>
+<span class="comment">%figure,imshowpair(uniformNoise, uniformFilter,'montage');</span>
+subplot(1,2,1),imshow(uniformNoise);
+subplot(1,2,2),imshow(uniformsmoothed);
+colormap(gray(256));
+axis <span class="string">image</span>;
+axis <span class="string">off</span>;
+<span class="comment">%title('Uniform noise and filter');</span>
+</pre><img vspace="5" hspace="5" src="Matt_Hurt_Assignement4_01.png" alt=""> <h2 id="4">Generate Gaussian noise with mean 0 and variance 0.01</h2><p>This function generates an array of size MxN whose elements are normal (Gaussian) numbers with zero mean and unit variance.</p><pre class="codeinput">gNoise = circle + [randn(256)*.01];
+
+<span class="comment">% Gaussian filter with smoothed edgeds</span>
+gFilterSmooth = medfilt2(gNoise);
+
+<span class="comment">% Image preview 2</span>
+<span class="comment">%figure,imshowpair(gNoise, gFilter,'montage');</span>
+subplot(1,2,1),imshow(gNoise);
+subplot(1,2,2),imshow(gFilterSmooth);
+colormap(gray(256));
+axis <span class="string">image</span>;
+axis <span class="string">off</span>;
+<span class="comment">%title('Guassian Noise Filter');</span>
+</pre><img vspace="5" hspace="5" src="Matt_Hurt_Assignement4_02.png" alt=""> <h2 id="5">Generate Salt and Pepper Noise</h2><pre class="codeinput">SP = circle;
+[rows, cols] = size(SP);
+
+noise_percent = 120;
+
+    <span class="keyword">for</span> i = 1:rows
+        <span class="keyword">for</span> j = 1:cols
+            noise_check = randi(100);
+            <span class="keyword">if</span>(noise_check == 2)
+                SP(i,j) = 1;
+            <span class="keyword">end</span>
+            <span class="keyword">if</span>(noise_check == 1)
+                SP(i,j) = 0;
+            <span class="keyword">end</span>
+
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+<span class="comment">% Salt and Pepper filter</span>
+SPfilter = medfilt2(circle);
+
+SPfilterArray = repmat(SPfilter, [1 2]);
+<span class="comment">%montage(SPfilterArray, 'size', [1 NaN]);</span>
+
+<span class="comment">%Image preview 3</span>
+<span class="comment">%figure, imshowpair(SP,SPfilter, 'montage');</span>
+subplot(1,2,1),imshow(SP);
+subplot(1,2,2),imshow(SPfilter);
+colormap(gray(256));
+axis <span class="string">image</span>;
+axis <span class="string">off</span>;
+</pre><img vspace="5" hspace="5" src="Matt_Hurt_Assignement4_03.png" alt=""> <h2 id="6">Cornermtric function C=cornermetric(f, method, param1, val1, param2, val2)</h2><p>The Harris-Stephens and minimum-eigenvalue detectors are implemented in the Image Processing Toolbox where:   * f is the input image   * Method can be either 'Harris' or 'MinimumEigenvalue'.   * param1 is 'FilterCoefficients'.   * val1 is a vector containing the coefficients of a 1-D spatial filter   mask, from which the function generates the corresponding 2-D square   filter w discussed earlier.  If param1, val1 are not included in the   call, the function generates a default 5x5 Gaussian filter using   fspecial('gaussian', [1 5],1.5) to generate the coefficients of the 1-D   filter.   * param 2 is 'SensitivityFactor', applicable only to the Harris   detector.   *val2 is the value of the sensitivity factor k explained earlier.  Its   values are in the range 0 &lt; k &lt; 0.25.  The default value is 0.04.</p><h2 id="7">NOTES</h2><p>Generate Noise   The degradation function operates on an input image f(x,y) to produce a   degraded image g(x,y) =&gt;</p><pre>     g(x,y)=degridationFunction[f(x,y)] + additiveNoise(x,y)</pre><pre class="language-matlab">The <span class="string">objective</span> <span class="string">of</span> <span class="string">restoration</span> <span class="string">is</span> <span class="string">to</span> <span class="string">obtain</span> <span class="string">an</span> <span class="string">estimate</span>, f(x,y), of <span class="string">the</span>
+original <span class="string">image.</span>  <span class="string">We</span> <span class="string">want</span> <span class="string">the</span> <span class="string">estimate</span> <span class="string">to</span> <span class="string">be</span> <span class="string">as</span> <span class="string">close</span> <span class="string">as</span> <span class="string">possible</span> <span class="string">to</span> <span class="string">the</span>
+original <span class="string">imput</span> <span class="string">image.</span>  <span class="string">In</span> <span class="string">general</span>, the <span class="string">more</span> <span class="string">we</span> <span class="string">know</span> <span class="string">about</span> <span class="string">H</span> <span class="string">and</span>
+additiveNoise(x,y), the <span class="string">closer</span> <span class="string">f(x,y)</span> <span class="string">will</span> <span class="string">be</span> <span class="string">to</span> <span class="string">f(x,y).</span>
+If <span class="string">H</span> <span class="string">is</span> <span class="string">a</span> <span class="string">linear</span>, sparially <span class="string">invariant</span> <span class="string">process</span>, it <span class="string">can</span> <span class="string">shown</span> <span class="string">thta</span> <span class="string">the</span>
+degraded <span class="string">image</span> <span class="string">is</span> <span class="string">given</span> <span class="string">in</span> <span class="string">the</span> <span class="string">spatial</span> <span class="string">domain</span> <span class="string">by</span> <span class="string">=&gt;</span>
+</pre><pre>     restorationFilter(x,y) = pointSpredFunction(x,y)*
+                             (convolution)f(x,y) + additivenoise(x,y)</pre><pre class="language-matlab">where <span class="string">h(x,y)</span> <span class="string">is</span> <span class="string">the</span> <span class="string">spatial</span> <span class="string">representation</span> <span class="string">of</span> <span class="string">the</span> <span class="string">degradation</span> <span class="string">function</span>
+the <span class="string">convolution.</span>  <span class="string">Convolution</span> <span class="string">in</span> <span class="string">the</span> <span class="string">spatial</span> <span class="string">domain</span> <span class="string">and</span> <span class="string">multiplication</span>
+in <span class="string">the</span> <span class="string">frequency</span> <span class="string">domain</span> <span class="string">constitute</span> <span class="string">a</span> <span class="string">Fourier</span> <span class="string">transform</span> <span class="string">pair</span>, so <span class="string">we</span> <span class="string">can</span>
+write <span class="string">the</span> <span class="string">preceding</span> <span class="string">model</span> <span class="string">in</span> <span class="string">an</span> <span class="string">equivalent</span> <span class="string">frequency</span> <span class="string">domain</span>
+representation:
+</pre><pre>     G(u,v) = H(u,v)opticalTransferFunction(u,v) + N(u,v)</pre><pre>     where the terms in capital letters are the Fourier transforms of
+     the corresponding terms in the spatial domain.  F(u,v) is the
+     degridation function that is somethimes called the optical transfer
+     function (OTF)</pre><p>Fourier transform pair functions for converting between them or "convolving the image with PSF(point spread function):</p><pre class="language-matlab">otf2psf() and <span class="string">psf2otf()</span>
+- Similarly, the <span class="string">restoration</span> <span class="string">process</span> <span class="string">is</span> <span class="string">refered</span> <span class="string">to</span> <span class="string">as</span> <span class="string">deconvolution.</span>
+- H is <span class="string">the</span> <span class="string">identity</span> <span class="string">operator</span> <span class="string">and</span> <span class="string">we</span> <span class="string">deal</span> <span class="string">only</span> <span class="string">with</span> <span class="string">degradation</span> <span class="string">due</span> <span class="string">to</span>
+  noise.
+</pre><p>Noise Models: g = imnoise(f,type, parameters)</p><pre class="language-matlab">where <span class="string">imnoise()</span> <span class="string">converts</span> <span class="string">the</span> <span class="string">imput</span> <span class="string">image</span> <span class="string">to</span> <span class="string">class</span> <span class="string">double</span> <span class="string">in</span> <span class="string">the</span> <span class="string">range</span>
+[0 1] before <span class="string">adding</span> <span class="string">noise</span> <span class="string">to</span> <span class="string">it.</span>  <span class="string">This</span> <span class="string">must</span> <span class="string">be</span> <span class="string">taken</span> <span class="string">into</span> <span class="string">account</span> <span class="string">when</span>
+specifying <span class="string">noise</span> <span class="string">parameters.f</span> <span class="string">is</span> <span class="string">the</span> <span class="string">input</span> <span class="string">image</span>, and <span class="string">type</span> <span class="string">and</span>
+parameters
+</pre><pre class="codeinput"><span class="comment">% [r,c] = size(im);</span>
+<span class="comment">% D = zeros(r,c);</span>
+<span class="comment">% uniformNoise = rand(D);</span>
+<span class="comment">% uniformNoise = find(im);</span>
+<span class="comment">% %[r, c] = find(A);</span>
+<span class="comment">% %[r,c,v] = find(A);</span>
+<span class="comment">% I = find(im &lt; 128);</span>
+<span class="comment">% %A(I) = 0;</span>
+<span class="comment">% %The operation on line 101 caould also be done using logical indexing ex105</span>
+<span class="comment">% %A &lt; 128 returns a 1 for the elements of A that satisfy the logical</span>
+<span class="comment">% %condition and 0 for those that do not.</span>
+<span class="comment">% im(im &lt; 128) = 0;</span>
+<span class="comment">% EXAMPLE: set to 128 all pixels in the interval [64, 192]</span>
+<span class="comment">% I = find(A &gt;= 64 &amp; A &lt;= 192);</span>
+<span class="comment">% A(I) = 128;</span>
+<span class="comment">%Equivalently, could be written</span>
+<span class="comment">%   A(A &gt;+ 64 &amp; A&lt;+ 192) = 128</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Assignment 4
+% Requirements:
+%
+%   1.  Generate a 256x256 grayscale image with only two different
+%   intensity levels (0.4 and 0.7 within the range [0-1]).  The intensity
+%   of the center part (the distance between the pixel and the center point
+%   < 80 pixels) of the image is set to 0.4 and the intesity of the left
+%   part of the image is set to be 0.7.
+%
+%   2.  Generate three types of noises
+%       1. Gaussian noise with mean 0 and variance 0.01
+%       2. Uniform noise with range [-0.05 to 0.05]
+%       3. Salt and pepper noise with d = 0.02 (2% of pixels get affected
+%       by S&P noise)
+%   
+%   3.  Add the three types of noises to the grayscale image. Include the
+%   noisy images and the histogram of the noisy images.
+%
+%   4.  Select proper type of filter and use them to restore the noisy
+%   images.  Include the restoration results and discussions of
+%   filtering approach.
+
+
+%% Clear all variables from Workspace
+clear all;
+clc;
+
+%% Generate image with a circle
+R = 80;
+circle = double(zeros(256));
+for i=1:256
+    for j=1:256
+        if sqrt((i-128)^2+(j-128)^2) < R
+        circle(i,j) = .4;
+        else
+        circle(i,j) = .7;
+        end
+    end
+end
+%imshow(circle);
+
+%% Generate Uniform Noise
+%[r, c] = size(256);
+uniformNoise = circle + [rand(256)*.1-.05]; 
+%imshow(uniformNoise);
+
+% Uniform filter
+uniformFilter = fspecial('average', 3);
+uniformsmoothed=filter2(uniformFilter, uniformNoise);
+%Image preview 1
+%figure,imshowpair(uniformNoise, uniformFilter,'montage');
+subplot(1,2,1),imshow(uniformNoise);
+subplot(1,2,2),imshow(uniformsmoothed);
+colormap(gray(256));
+axis image;
+axis off;
+%title('Uniform noise and filter');
+
+%% Generate Gaussian noise with mean 0 and variance 0.01
+% This function generates an array of size MxN whose elements are normal
+% (Gaussian) numbers with zero mean and unit variance.  
+gNoise = circle + [randn(256)*.01];
+
+% Gaussian filter with smoothed edgeds
+gFilterSmooth = medfilt2(gNoise);
+
+% Image preview 2
+%figure,imshowpair(gNoise, gFilter,'montage');
+subplot(1,2,1),imshow(gNoise);
+subplot(1,2,2),imshow(gFilterSmooth);
+colormap(gray(256));
+axis image;
+axis off;
+%title('Guassian Noise Filter');
+
+%% Generate Salt and Pepper Noise
+SP = circle;
+[rows, cols] = size(SP);
+
+noise_percent = 120;
+    
+    for i = 1:rows
+        for j = 1:cols
+            noise_check = randi(100);
+            if(noise_check == 2)
+                SP(i,j) = 1;
+            end
+            if(noise_check == 1)
+                SP(i,j) = 0;
+            end
+            
+        end
+    end
+
+% Salt and Pepper filter
+SPfilter = medfilt2(circle);
+
+SPfilterArray = repmat(SPfilter, [1 2]);
+%montage(SPfilterArray, 'size', [1 NaN]);
+
+%Image preview 3
+%figure, imshowpair(SP,SPfilter, 'montage');
+subplot(1,2,1),imshow(SP);
+subplot(1,2,2),imshow(SPfilter);
+colormap(gray(256));
+axis image;
+axis off;
+
+%% Cornermtric function C=cornermetric(f, method, param1, val1, param2, val2)
+% The Harris-Stephens and minimum-eigenvalue detectors are implemented in
+% the Image Processing Toolbox where: 
+%   * f is the input image
+%   * Method can be either 'Harris' or 'MinimumEigenvalue'.
+%   * param1 is 'FilterCoefficients'.
+%   * val1 is a vector containing the coefficients of a 1-D spatial filter
+%   mask, from which the function generates the corresponding 2-D square
+%   filter w discussed earlier.  If param1, val1 are not included in the
+%   call, the function generates a default 5x5 Gaussian filter using
+%   fspecial('gaussian', [1 5],1.5) to generate the coefficients of the 1-D
+%   filter.
+%   * param 2 is 'SensitivityFactor', applicable only to the Harris
+%   detector.
+%   *val2 is the value of the sensitivity factor k explained earlier.  Its
+%   values are in the range 0 < k < 0.25.  The default value is 0.04.
+
+
+%% NOTES
+% Generate Noise
+%   The degradation function operates on an input image f(x,y) to produce a
+%   degraded image g(x,y) => 
+%
+%       g(x,y)=degridationFunction[f(x,y)] + additiveNoise(x,y)
+%
+%   The objective of restoration is to obtain an estimate, f(x,y), of the
+% original image.  We want the estimate to be as close as possible to the
+% original imput image.  In general, the more we know about H and
+% additiveNoise(x,y), the closer f(x,y) will be to f(x,y).
+%   If H is a linear, sparially invariant process, it can shown thta the
+%   degraded image is given in the spatial domain by =>
+%
+%       restorationFilter(x,y) = pointSpredFunction(x,y)*
+%                               (convolution)f(x,y) + additivenoise(x,y)
+%
+%   where h(x,y) is the spatial representation of the degradation function
+%   the convolution.  Convolution in the spatial domain and multiplication
+%   in the frequency domain constitute a Fourier transform pair, so we can
+%   write the preceding model in an equivalent frequency domain
+%   representation: 
+%
+%       G(u,v) = H(u,v)opticalTransferFunction(u,v) + N(u,v)
+%
+%       where the terms in capital letters are the Fourier transforms of
+%       the corresponding terms in the spatial domain.  F(u,v) is the
+%       degridation function that is somethimes called the optical transfer
+%       function (OTF)
+%
+% Fourier transform pair functions for converting 
+% between them or "convolving the image with PSF(point spread function): 
+%
+%   otf2psf() and psf2otf()
+%   - Similarly, the restoration process is refered to as deconvolution.
+%   - H is the identity operator and we deal only with degradation due to
+%     noise.
+%
+% Noise Models: g = imnoise(f,type, parameters)
+%
+%   where imnoise() converts the imput image to class double in the range
+%   [0 1] before adding noise to it.  This must be taken into account when 
+%   specifying noise parameters.f is the input image, and type and 
+%   parameters
+
+% [r,c] = size(im);
+% D = zeros(r,c);
+% uniformNoise = rand(D);
+% uniformNoise = find(im);
+% %[r, c] = find(A);
+% %[r,c,v] = find(A);
+% I = find(im < 128);
+% %A(I) = 0;
+% %The operation on line 101 caould also be done using logical indexing ex105
+% %A < 128 returns a 1 for the elements of A that satisfy the logical
+% %condition and 0 for those that do not.
+% im(im < 128) = 0;
+% EXAMPLE: set to 128 all pixels in the interval [64, 192]
+% I = find(A >= 64 & A <= 192);
+% A(I) = 128;
+%Equivalently, could be written
+%   A(A >+ 64 & A<+ 192) = 128
+
+##### SOURCE END #####
+--></body></html>

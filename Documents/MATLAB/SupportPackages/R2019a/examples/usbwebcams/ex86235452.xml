@@ -1,0 +1,6 @@
+<example>
+  <main type="mlx">CreateAWebcamObjectUsingNoArgumentsExample</main>
+  <product>matlab</product>
+  <product>usbwebcams</product>
+  <sandboxPublished reasons="hardware"/>
+</example>

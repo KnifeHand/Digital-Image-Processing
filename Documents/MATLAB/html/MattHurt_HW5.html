@@ -1,0 +1,303 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>MattHurt_HW5</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-25"><meta name="DC.source" content="MattHurt_HW5.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Assignment 5 by Matt Hurt</a></li><li><a href="#2">Read in the file image and set variables</a></li><li><a href="#3">Split pixels into rows and columns</a></li><li><a href="#4">Calculate the means square error</a></li><li><a href="#5">Structure Similarity Index</a></li><li><a href="#6">Map gamma intensity values</a></li><li><a href="#7">blurred</a></li><li><a href="#8">Average Difference Calculation</a></li><li><a href="#9">Maximum Difference Calculation</a></li><li><a href="#10">Normalized absolute Error Calculation</a></li><li><a href="#11">Values</a></li></ul></div><h2 id="1">Assignment 5 by Matt Hurt</h2><p>The purpose of this program is to measure the image quality with different distortions using different quality metrics.  I am using an input image that I took of my dog Kona and used a maker tool in preview to distort the images from the original.  The quality of the distortion images is measured with the MSE, PSNR, SSIM functions that were provided in hint code.  Then, I obtained a quality metric from mathworks.com by the author Athi Narayanan for a quality metric.  To evaluate the performance of the focus measures, existing methods were selected from different families.  The conducted experiments and results of various statistical measurements of image quality.  In this program the images are dynamically adjusted and benchmarked against the input images.</p><pre class="codeinput">clc
+clear <span class="string">all</span>
+close <span class="string">all</span>
+</pre><h2 id="2">Read in the file image and set variables</h2><pre class="codeinput">origImg=imread(<span class="string">'kona.jpg'</span>);
+distImg1 = imread(<span class="string">'konaDist1.jpg'</span>);
+distImg2 = imread(<span class="string">'konaDist2.jpg'</span>);
+rgb2gray(origImg);
+rgb2gray(distImg1);
+rgb2gray(distImg2);
+imshow(origImg); title(<span class="string">'Original image'</span>);
+imshow(distImg1); title(<span class="string">'Distorted image 1'</span>);
+imshow(distImg2); title(<span class="string">'Distored image 2'</span>);
+</pre><img vspace="5" hspace="5" src="MattHurt_HW5_01.png" alt=""> <h2 id="3">Split pixels into rows and columns</h2><pre class="codeinput">[r,c]=size(origImg);
+[r,c] = size(distImg1);
+[r,c] = size(distImg2);
+</pre><h2 id="4">Calculate the means square error</h2><p>if the MSE decreases to zero, the pixel-by-pixel matching of the images becomes perfect.  If the calculation is small then this will correspond to a high quality deompressed image. The value increases as the compression ratio increases. In this case the mean-squared eror is 1861.64 which means that the distorted area is that far away from the original image.  The second image still has a high value but not by as much.</p><pre class="codeinput">err = immse(origImg,distImg1);
+histeq(err);
+err = immse(distImg1, distImg2);
+fprintf(<span class="string">'\n The mean-squared error is %0.4f\n'</span>, err);
+</pre><pre class="codeoutput">
+ The mean-squared error is 2454.4441
+</pre><img vspace="5" hspace="5" src="MattHurt_HW5_02.png" alt=""> <h2 id="5">Structure Similarity Index</h2><p>Computes the value for image im using distImg1 as the reference image.  This method is for measuring the similarity between two images where the value lies between [0 1].  SSIM is is designed to improve on traditional metrics like PSNR and MSE, which have proved be inconsistant with human eye perception.</p><pre class="codeinput">[ssimval, ssimmap] = ssim(origImg, distImg1);
+[ssimval, ssimmap] = ssim(distImg1, distImg2);
+<span class="comment">% Scale the display based on the range of pixel values and display minimum</span>
+<span class="comment">% value as black and the maximum value as white.</span>
+imshow(ssimmap, []); title(<span class="string">'Structural Similarity Map'</span>);
+</pre><img vspace="5" hspace="5" src="MattHurt_HW5_03.png" alt=""> <h2 id="6">Map gamma intensity values</h2><p>Gamma specifies the shape of the curve describing the relationship between the values.</p><pre class="codeinput">im3 = imadjust(distImg1,[],[],0.5); <span class="comment">%distImg2</span>
+<span class="comment">%figure,imshow(im3); title('Gamma Correction');</span>
+</pre><h2 id="7">blurred</h2><pre class="codeinput">H = fspecial(<span class="string">'motion'</span>,10,15);
+im4 = imfilter(im3,H,<span class="string">'same'</span>);
+<span class="comment">%figure,imshow(im4); title('Blurred');</span>
+</pre><h2 id="8">Average Difference Calculation</h2><p>Average Difference provides the average of change concerning the processed and refernce image.  Average difference in this case is 0.05. Meaning there isn't much change after the manipulation and the algorithm got as close to zero as possible.</p><pre class="codeinput">origImgtest = double(origImg);
+grayImgorig = rgb2gray(origImgtest);
+distImg = double(distImg1);
+grayDistImg = rgb2gray(distImg);
+distIm2 = double(distImg2);
+
+[M, N] = size(grayImgorig);
+[Q, R] = size(distImg2);
+error = grayImgorig - grayDistImg; <span class="comment">% test distImg2</span>
+
+reshape(error,1,[]); <span class="comment">% flatten the image</span>
+C = [0 2 4 6; 8 10 12 14; 16 18 20 22];
+x = [5 8];
+y = [3 6];
+Z = 10 + peaks;
+plot(1:3)
+surf(error)
+hold <span class="string">on</span>
+image(Z,<span class="string">'CDataMapping'</span>,<span class="string">'scaled'</span>);
+imhist(origImg);
+imhist(distImg);
+histogram(grayDistImg);
+
+AD = sum(sum(error)) / (M*N);
+<span class="comment">%ADavg = AD/2;</span>
+fprintf(<span class="string">'\n Average difference Calculation is %0.2f\n'</span>, AD);
+</pre><pre class="codeoutput">
+ Average difference Calculation is 0.05
+</pre><img vspace="5" hspace="5" src="MattHurt_HW5_04.png" alt=""> <h2 id="9">Maximum Difference Calculation</h2><p>Maximum Difference provides the maximum of the error signal (the difference between the processed and reference image).  The greater the value from zero of the max diff, the poorer the quality of the image.  In this case the maximum difference is one.</p><pre class="codeinput">MD = max(max(error));
+
+fprintf(<span class="string">'\n Maximum difference Calculation is %0.2f\n'</span>, MD);
+</pre><pre class="codeoutput">
+ Maximum difference Calculation is 1.00
+</pre><h2 id="10">Normalized absolute Error Calculation</h2><p>Needed another toolbox to make this work.</p><pre class="codeinput"><span class="comment">%NAE = sum(sum(abs(error)))/sub(sum(origImgtest));</span>
+</pre><h2 id="11">Values</h2><pre class="codeinput">V_psnr1=psnr(origImg,distImg1);  <span class="comment">% PSNR(im,im1)</span>
+V_psnr2=psnr(origImg,im3);
+V_psnr3=psnr(origImg,im4);
+
+fprintf(<span class="string">'\n Peak Signal Noise Ratio of origImg and distImg1 is %0.2f\n'</span>, V_psnr1);
+fprintf(<span class="string">'\n Peak Signal Noise Ratio of origImg and im3 is %0.2f\n'</span>, V_psnr2);
+fprintf(<span class="string">'\n Peak Signal Noise Ratio of origImg and im4 is %0.2f\n'</span>, V_psnr3);
+
+V_ssim1=ssim(origImg,distImg1);
+V_ssim2=ssim(origImg,im3);
+V_ssim3=ssim(origImg,im4);
+
+fprintf(<span class="string">'\n Structural Simularity Index Measurement 1 is %0.2f\n'</span>, V_ssim1);
+fprintf(<span class="string">'\n Structural Simularity Index Measurement 2 is %0.2f\n'</span>, V_ssim2);
+fprintf(<span class="string">'\n Structural Simularity Index Measurement 3 is %0.2f\n'</span>, V_ssim3);
+
+i=i;
+</pre><pre class="codeoutput">
+ Peak Signal Noise Ratio of origImg and distImg1 is 15.43
+
+ Peak Signal Noise Ratio of origImg and im3 is 11.84
+
+ Peak Signal Noise Ratio of origImg and im4 is 12.02
+
+ Structural Simularity Index Measurement 1 is 0.87
+
+ Structural Simularity Index Measurement 2 is 0.68
+
+ Structural Simularity Index Measurement 3 is 0.67
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Assignment 5 by Matt Hurt
+% The purpose of this program is to measure the image quality with
+% different distortions using different quality metrics.  I am using an
+% input image that I took of my dog Kona and used a maker tool in preview to
+% distort the images from the original.  The quality of the distortion
+% images is measured with the MSE, PSNR, SSIM functions that were provided
+% in hint code.  Then, I obtained a quality metric from mathworks.com by 
+% the author Athi Narayanan for a quality metric.  To evaluate the 
+% performance of the focus measures, existing methods were
+% selected from different families.  The conducted experiments and results
+% of various statistical measurements of image quality.  In this program
+% the images are dynamically adjusted and benchmarked against the input
+% images. 
+
+clc
+clear all
+close all
+
+%% Read in the file image and set variables
+origImg=imread('kona.jpg');
+distImg1 = imread('konaDist1.jpg');
+distImg2 = imread('konaDist2.jpg');
+rgb2gray(origImg);
+rgb2gray(distImg1);
+rgb2gray(distImg2);
+imshow(origImg); title('Original image');
+imshow(distImg1); title('Distorted image 1');
+imshow(distImg2); title('Distored image 2');
+
+
+%% Split pixels into rows and columns
+[r,c]=size(origImg);
+[r,c] = size(distImg1);
+[r,c] = size(distImg2);
+
+%% Calculate the means square error
+% if the MSE decreases to zero, the pixel-by-pixel matching of the images
+% becomes perfect.  If the calculation is small then this will correspond
+% to a high quality deompressed image. The value increases as the
+% compression ratio increases. In this case the mean-squared eror is
+% 1861.64 which means that the distorted area is that far away from the
+% original image.  The second image still has a high value but not by as
+% much.
+err = immse(origImg,distImg1);
+histeq(err);
+err = immse(distImg1, distImg2);
+fprintf('\n The mean-squared error is %0.4f\n', err);
+
+%% Structure Similarity Index
+% Computes the value for image im using distImg1 as the reference image.  This
+% method is for measuring the similarity between two images where the value
+% lies between [0 1].  SSIM is is designed to improve on traditional
+% metrics like PSNR and MSE, which have proved be inconsistant with human
+% eye perception.
+[ssimval, ssimmap] = ssim(origImg, distImg1);
+[ssimval, ssimmap] = ssim(distImg1, distImg2);
+% Scale the display based on the range of pixel values and display minimum
+% value as black and the maximum value as white.
+imshow(ssimmap, []); title('Structural Similarity Map');
+
+%% Map gamma intensity values
+% Gamma specifies the shape of the curve describing the 
+% relationship between the values.
+im3 = imadjust(distImg1,[],[],0.5); %distImg2
+%figure,imshow(im3); title('Gamma Correction');
+
+%% blurred
+H = fspecial('motion',10,15);
+im4 = imfilter(im3,H,'same');
+%figure,imshow(im4); title('Blurred');
+
+%% Average Difference Calculation
+% Average Difference provides the average of change concerning the
+% processed and refernce image.  Average difference in this case is 0.05.
+% Meaning there isn't much change after the manipulation and the algorithm
+% got as close to zero as possible.
+origImgtest = double(origImg);
+grayImgorig = rgb2gray(origImgtest);
+distImg = double(distImg1);
+grayDistImg = rgb2gray(distImg);
+distIm2 = double(distImg2);
+
+[M, N] = size(grayImgorig);
+[Q, R] = size(distImg2);
+error = grayImgorig - grayDistImg; % test distImg2
+
+reshape(error,1,[]); % flatten the image
+C = [0 2 4 6; 8 10 12 14; 16 18 20 22];
+x = [5 8];
+y = [3 6];
+Z = 10 + peaks;
+plot(1:3)
+surf(error)
+hold on
+image(Z,'CDataMapping','scaled');
+imhist(origImg);
+imhist(distImg);
+histogram(grayDistImg);
+
+AD = sum(sum(error)) / (M*N);
+%ADavg = AD/2;
+fprintf('\n Average difference Calculation is %0.2f\n', AD);
+
+%% Maximum Difference Calculation
+% Maximum Difference provides the maximum of the error signal (the
+% difference between the processed and reference image).  The greater the
+% value from zero of the max diff, the poorer the quality of the image.  In
+% this case the maximum difference is one.  
+MD = max(max(error));
+
+fprintf('\n Maximum difference Calculation is %0.2f\n', MD);
+
+%% Normalized absolute Error Calculation
+% Needed another toolbox to make this work.
+
+%NAE = sum(sum(abs(error)))/sub(sum(origImgtest));
+
+%% Values
+V_psnr1=psnr(origImg,distImg1);  % PSNR(im,im1)
+V_psnr2=psnr(origImg,im3);
+V_psnr3=psnr(origImg,im4);
+
+fprintf('\n Peak Signal Noise Ratio of origImg and distImg1 is %0.2f\n', V_psnr1);
+fprintf('\n Peak Signal Noise Ratio of origImg and im3 is %0.2f\n', V_psnr2);
+fprintf('\n Peak Signal Noise Ratio of origImg and im4 is %0.2f\n', V_psnr3);
+
+V_ssim1=ssim(origImg,distImg1);
+V_ssim2=ssim(origImg,im3);
+V_ssim3=ssim(origImg,im4);
+
+fprintf('\n Structural Simularity Index Measurement 1 is %0.2f\n', V_ssim1);
+fprintf('\n Structural Simularity Index Measurement 2 is %0.2f\n', V_ssim2);
+fprintf('\n Structural Simularity Index Measurement 3 is %0.2f\n', V_ssim3);
+ 
+i=i;
+
+
+##### SOURCE END #####
+--></body></html>

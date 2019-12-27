@@ -1,0 +1,176 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>project2</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-09-22"><meta name="DC.source" content="project2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">% Sobel filter inhances virtical edges</span>
+clear <span class="string">all</span>;
+close <span class="string">all</span>;
+pic = rgb2gray(imread(<span class="string">'./standard_test_images/Me.jpg'</span>));
+<span class="comment">%pic = imread('./standard_test_images/iris.bmp');</span>
+pic = double(pic);
+
+<span class="comment">% Horizontal sharpening enhancements for spatial domain Sobel mask to preserve gray tonality.</span>
+horizontal = [0 1 0; 1 -4 1; 0 1 0];
+
+<span class="comment">% Virtical spatial domain for Sobel mask.</span>
+virtical = [-1 0 1; -1 0 1; -1 0 1];
+
+<span class="comment">% The imfilter comparethe result of filtering f in the spatial</span>
+<span class="comment">% domain with the Sobel mask againstthe result obtained by performing</span>
+<span class="comment">% the equivalent process in the frequency domain</span>
+pic2 = imfilter(pic, horizontal,<span class="string">'corr'</span>);
+
+<span class="comment">% Generate the filtered image</span>
+pic3 = filter2(virtical, pic);
+
+<span class="comment">%All the mean vectors are organized as rows of a matrix and determines the</span>
+<span class="comment">%membership fo the pattern vectors.</span>
+pic4 = sqrt((pic2.^2+pic3.^2)/2);
+
+<span class="comment">% Image preview 1</span>
+figure,subplot(2,2,1),image(pic);
+colormap(gray(256));
+axis <span class="string">image</span>;
+axis <span class="string">off</span>;
+title(<span class="string">'Original'</span>);
+
+<span class="comment">% Image preview 2</span>
+subplot(2,2,2),image(abs(pic2));
+colormap(gray(256));
+axis <span class="string">image</span>;
+axis <span class="string">off</span>;
+title(<span class="string">'Horizontal Sobel Filter'</span>);
+
+<span class="comment">% Image preview 3</span>
+subplot(2,2,3),image(abs(pic3));
+colormap(gray(256));
+axis <span class="string">image</span>;
+axis <span class="string">off</span>;
+title(<span class="string">'Verticle Sobel Filter'</span>);
+
+<span class="comment">% Image preview 4</span>
+subplot(2,2,4),image(pic4);
+colormap(gray(256));
+axis <span class="string">image</span>;
+axis <span class="string">off</span>;
+title(<span class="string">'Horizontal &amp; Verticle Sobel Filter'</span>);
+</pre><img vspace="5" hspace="5" src="project2_01.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% Sobel filter inhances virtical edges
+clear all;
+close all;
+pic = rgb2gray(imread('./standard_test_images/Me.jpg'));
+%pic = imread('./standard_test_images/iris.bmp');
+pic = double(pic);
+
+% Horizontal sharpening enhancements for spatial domain Sobel mask to preserve gray tonality.
+horizontal = [0 1 0; 1 -4 1; 0 1 0];
+
+% Virtical spatial domain for Sobel mask.
+virtical = [-1 0 1; -1 0 1; -1 0 1];
+
+% The imfilter comparethe result of filtering f in the spatial 
+% domain with the Sobel mask againstthe result obtained by performing 
+% the equivalent process in the frequency domain
+pic2 = imfilter(pic, horizontal,'corr');
+
+% Generate the filtered image
+pic3 = filter2(virtical, pic);
+
+%All the mean vectors are organized as rows of a matrix and determines the
+%membership fo the pattern vectors.
+pic4 = sqrt((pic2.^2+pic3.^2)/2);
+ 
+% Image preview 1
+figure,subplot(2,2,1),image(pic);
+colormap(gray(256));
+axis image;
+axis off;
+title('Original');
+
+% Image preview 2
+subplot(2,2,2),image(abs(pic2));
+colormap(gray(256));
+axis image;
+axis off;
+title('Horizontal Sobel Filter');
+
+% Image preview 3
+subplot(2,2,3),image(abs(pic3));
+colormap(gray(256));
+axis image;
+axis off;
+title('Verticle Sobel Filter');
+
+% Image preview 4
+subplot(2,2,4),image(pic4);
+colormap(gray(256));
+axis image;
+axis off;
+title('Horizontal & Verticle Sobel Filter');
+##### SOURCE END #####
+--></body></html>

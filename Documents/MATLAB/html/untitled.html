@@ -1,0 +1,224 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>untitled</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-10-18"><meta name="DC.source" content="untitled.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Assignment 3 Program requirements</a></li><li><a href="#2">Clears the values from the workspace</a></li><li><a href="#3">Reading the image and adjusting the size of the input image.</a></li><li><a href="#4">Specify separate output channels into different color planes.</a></li><li><a href="#5">Calculate the overall maximum value.</a></li><li><a href="#6">Plot the histogram and determing the level of luminence.</a></li><li><a href="#7">Eliminate the luminance in the background.</a></li><li><a href="#8">Removing the false positive</a></li><li><a href="#9">Converting LUV back to RGB</a></li><li><a href="#10">Conver image from LUV back to RGB</a></li><li><a href="#11">Perform skin detection</a></li><li><a href="#12">Final Result</a></li></ul></div><h2 id="1">Assignment 3 Program requirements</h2><p>Requirements: 1.Download face images ?face_good.bmp? and ?face_dark.bmp? from   blackboard. Download function code ?colorspace.m? for different color   space conversion. 2.Perform skin detection on both images using the skin detection method   introduced in the paper ?0REF_Paper_Survey on Skin Color Techniques?. 3.Remove the large false-positive area detected from the ?face_dark?   image.   Clearly describe how you removed the large false positive part in   your report.</p><pre class="codeinput"><span class="comment">%4.	Show the detection results in your report, keep detected skin of the</span>
+<span class="comment">%   original image and mask out everything else. The final detection</span>
+<span class="comment">%   results with tiny/small noisy features (that are not skin such as</span>
+<span class="comment">%   following figure) are accepted.</span>
+</pre><h2 id="2">Clears the values from the workspace</h2><pre class="codeinput">clear <span class="string">all</span>;
+clc;
+</pre><h2 id="3">Reading the image and adjusting the size of the input image.</h2><pre class="codeinput">image = imread(<span class="string">'standard_test_images/face_dark.bmp'</span>);
+height = size(image,1);
+width = size(image,2);
+figure, imshow(image);
+</pre><img vspace="5" hspace="5" src="untitled_01.png" alt=""> <h2 id="4">Specify separate output channels into different color planes.</h2><p>Colorspace function provided.</p><pre class="codeinput">im_to_LUV = colorspace(<span class="string">'Luv&lt;-rgb'</span>, image);
+L=im_to_LUV(:,:,1); <span class="comment">%Luminence</span>
+U=im_to_LUV(:,:,2);
+V=im_to_LUV(:,:,3); <span class="comment">%Value</span>
+imshowpair(image, im_to_LUV, <span class="string">'montage'</span>);
+</pre><img vspace="5" hspace="5" src="untitled_02.png" alt=""> <h2 id="5">Calculate the overall maximum value.</h2><p>Finding the overall maximum value for the luminance of each pixel in the matrix L, If L is a matrix, then max(L) is a row vector containing the max value of each column.  The max method ouside returns the maximum of L if L is a vector.</p><pre class="codeinput">range=max(max(L));
+imshowpair(image, range, <span class="string">'montage'</span>);
+</pre><img vspace="5" hspace="5" src="untitled_03.png" alt=""> <h2 id="6">Plot the histogram and determing the level of luminence.</h2><p>This program is to get the normalized histogram of the image and display using plot.  The plot histogram function is commented out for testing purposes.</p><pre class="codeinput">histogram = myhist(L);
+plot(histogram)
+<span class="comment">%imshow(L)</span>
+</pre><img vspace="5" hspace="5" src="untitled_04.png" alt=""> <h2 id="7">Eliminate the luminance in the background.</h2><p>After inspecting the histogram values to find the local minimum, it was determined that the local minimum was 70.</p><pre class="codeinput">localmin = 70;
+</pre><h2 id="8">Removing the false positive</h2><p>This iteration splits the image into a rows and columns array. The image also gets resized and returns a row vector whose elements contain the length of the corresponding dimensions of the Luminence. Loop variables i and j scan through all the values from 1 - 255 and if any of the values in the background are more than the local minimum, they are set to 0 to make the background black.  This cuts out the image and discards the background.</p><pre class="codeinput">[r,c]=size(L);
+<span class="keyword">for</span> i = 1 : r
+    <span class="keyword">for</span> j = 1 : c
+        <span class="keyword">if</span> L(i,j) &gt; localmin
+            L(i,j) = 0;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+L2=L;
+imshowpair(L, L2, <span class="string">'montage'</span>);
+</pre><img vspace="5" hspace="5" src="untitled_05.png" alt=""> <h2 id="9">Converting LUV back to RGB</h2><p>The color values are still separated into different color channels and now we need to re-combine them again using this given method to add the new luminence into the original image color plane by putting them back where they belong.</p><pre class="codeinput">luv_to_rgb(:,:,1)=L2;
+luv_to_rgb(:,:,2)=U;
+luv_to_rgb(:,:,3)=V;
+imshowpair(L2, luv_to_rgb, <span class="string">'montage'</span>);
+</pre><img vspace="5" hspace="5" src="untitled_06.png" alt=""> <h2 id="10">Conver image from LUV back to RGB</h2><pre class="codeinput">finalImage = colorspace(<span class="string">'rgb&lt;-Luv'</span>,luv_to_rgb);
+imshowpair(luv_to_rgb, finalImage, <span class="string">'montage'</span>);
+</pre><img vspace="5" hspace="5" src="untitled_07.png" alt=""> <h2 id="11">Perform skin detection</h2><pre class="language-matlab">Perform <span class="string">skin</span> <span class="string">detection</span> <span class="string">on</span> <span class="string">both</span> <span class="string">images</span> <span class="string">using</span> <span class="string">the</span> <span class="string">skin</span> <span class="string">detection</span> <span class="string">method</span>
+introduced <span class="string">in</span> <span class="string">the</span> <span class="string">paper</span> <span class="string">?0REF_Paper_Survey</span> <span class="string">on</span> <span class="string">Skin</span> <span class="string">Color</span> <span class="string">Techniques?.</span>
+</pre><pre class="codeinput">image1 = (finalImage(:,:,1)&gt;95) &amp; (finalImage(:,:,2)&gt;40) &amp; (finalImage(:,:,3)&gt;20);
+image2 = (finalImage(:,:,1)-finalImage(:,:,2)&gt;15) | (finalImage(:,:,1)-finalImage(:,:,3)&gt;15);
+image3 = (finalImage(:,:,1)-finalImage(:,:,2)&gt;15) &amp; (finalImage(:,:,1)&gt;finalImage(:,:,3));
+imagesample = image1 &amp; image2 &amp; image3;
+</pre><h2 id="12">Final Result</h2><pre class="codeinput">imshow(finalImage);
+</pre><img vspace="5" hspace="5" src="untitled_08.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Assignment 3 Program requirements
+% Requirements: 
+% 1.Download face images ?face_good.bmp? and ?face_dark.bmp? from 
+%   blackboard. Download function code ?colorspace.m? for different color 
+%   space conversion. 
+% 2.Perform skin detection on both images using the skin detection method 
+%   introduced in the paper ?0REF_Paper_Survey on Skin Color Techniques?.
+% 3.Remove the large false-positive area detected from the ?face_dark? 
+%   image.
+%   Clearly describe how you removed the large false positive part in 
+%   your report.
+%4.	Show the detection results in your report, keep detected skin of the 
+%   original image and mask out everything else. The final detection 
+%   results with tiny/small noisy features (that are not skin such as 
+%   following figure) are accepted.
+
+
+%% Clears the values from the workspace
+clear all;
+clc;
+
+%% Reading the image and adjusting the size of the input image.
+image = imread('standard_test_images/face_dark.bmp');
+height = size(image,1);
+width = size(image,2);
+figure, imshow(image);
+
+%% Specify separate output channels into different color planes.  
+% Colorspace function provided.
+
+im_to_LUV = colorspace('Luv<-rgb', image); 
+L=im_to_LUV(:,:,1); %Luminence
+U=im_to_LUV(:,:,2); 
+V=im_to_LUV(:,:,3); %Value
+imshowpair(image, im_to_LUV, 'montage');
+
+%% Calculate the overall maximum value.
+% Finding the overall maximum value for the luminance of each pixel 
+% in the matrix L, If L is a matrix, then max(L) is a row vector containing 
+% the max value of each column.  The max method ouside returns the maximum 
+% of L if L is a vector.
+
+range=max(max(L));
+imshowpair(image, range, 'montage');
+
+%% Plot the histogram and determing the level of luminence.
+% This program is to get the normalized histogram of the image and display
+% using plot.  The plot histogram function is commented out for testing
+% purposes.
+
+histogram = myhist(L);
+plot(histogram)
+%imshow(L)
+
+%% Eliminate the luminance in the background.
+% After inspecting the histogram values to find the local minimum,
+% it was determined that the local minimum was 70.
+
+localmin = 70;
+
+%% Removing the false positive
+% This iteration splits the image into a rows and columns array.  
+% The image also gets resized and returns a row vector whose elements
+% contain the length of the corresponding dimensions of the Luminence.
+% Loop variables i and j scan through all the values from 1 - 255 and if
+% any of the values in the background are more than the local minimum, they
+% are set to 0 to make the background black.  This cuts out the image and
+% discards the background. 
+
+[r,c]=size(L);
+for i = 1 : r
+    for j = 1 : c
+        if L(i,j) > localmin
+            L(i,j) = 0;
+        end
+    end
+end
+L2=L;
+imshowpair(L, L2, 'montage');
+
+%% Converting LUV back to RGB
+% The color values are still separated into different color channels and
+% now we need to re-combine them again using this given method to add the
+% new luminence into the original image color plane by putting them back 
+% where they belong.
+luv_to_rgb(:,:,1)=L2;
+luv_to_rgb(:,:,2)=U;
+luv_to_rgb(:,:,3)=V;
+imshowpair(L2, luv_to_rgb, 'montage');
+
+%% Conver image from LUV back to RGB
+finalImage = colorspace('rgb<-Luv',luv_to_rgb);
+imshowpair(luv_to_rgb, finalImage, 'montage');
+
+%% Perform skin detection
+%   Perform skin detection on both images using the skin detection method 
+%   introduced in the paper ?0REF_Paper_Survey on Skin Color Techniques?.
+image1 = (finalImage(:,:,1)>95) & (finalImage(:,:,2)>40) & (finalImage(:,:,3)>20);
+image2 = (finalImage(:,:,1)-finalImage(:,:,2)>15) | (finalImage(:,:,1)-finalImage(:,:,3)>15);
+image3 = (finalImage(:,:,1)-finalImage(:,:,2)>15) & (finalImage(:,:,1)>finalImage(:,:,3));
+imagesample = image1 & image2 & image3;
+
+
+%% Final Result
+imshow(finalImage);
+
+
+
+##### SOURCE END #####
+--></body></html>

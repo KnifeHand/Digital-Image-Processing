@@ -1,0 +1,565 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>coin_counter</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-12-03"><meta name="DC.source" content="coin_counter.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">COUNT COINS</a></li><li><a href="#3">Convert the coin image</a></li><li><a href="#4">Print the results</a></li><li><a href="#5">Assign each blob a different color to visually show the distinct blobs.</a></li><li><a href="#6">Get all the blob properties.</a></li><li><a href="#7">Count the values</a></li><li><a href="#8">Interesting observations</a></li><li><a href="#9">Poor attempt at trying to transpose the image</a></li><li><a href="#10">This idea wasn't nessesary.  Fixed with im2bw().</a></li><li><a href="#11">This idea is for dealing with color images</a></li><li><a href="#12">Measure properties of image regions</a></li><li><a href="#13">Counter</a></li><li><a href="#14">Don't use / test only</a></li><li><a href="#15">Labeling gone wrong...</a></li></ul></div><pre class="codeinput">clear <span class="string">all</span>
+close <span class="string">all</span>
+</pre><h2 id="2">COUNT COINS</h2><h2 id="3">Convert the coin image</h2><p>When the image is read in it gets converted into a black and white transposed image and gets cleaned up with the imfill to eliminate any stand alone pixels.  The label variable is set to automatically choose how to label the objects in the image.  To ensure the label function is working correctly, im1 is set to equal the first image it lables as 1 not counting zero.</p><pre class="codeinput">normalizedThresholdValue = 0.4; <span class="comment">% In range 0 to 1.</span>
+image = imread(<span class="string">'coins.png'</span>);
+image = mat2gray(image);
+binaryImage = im2bw(image, normalizedThresholdValue);<span class="comment">% One way to threshold to binary</span>
+<span class="comment">%binaryImage = im2bw(image);</span>
+cleanImage = imfill(binaryImage, <span class="string">'holes'</span>);
+label = bwlabel(cleanImage,8);
+logicalBW = logical(label);
+
+thresholdValue = normalizedThresholdValue * max(max(image)); <span class="comment">% Gray Levels.</span>
+
+<span class="comment">%max(max(logicalLabel));</span>
+<span class="comment">%im1 = (label==10);</span>
+</pre><h2 id="4">Print the results</h2><pre class="codeinput">figure;
+subplot(2,2,1), imshow(image)
+title(<span class="string">'Original image'</span>);
+subplot(2,2,2), imshow(binaryImage)
+title(<span class="string">'Black and white'</span>);
+subplot(2,2,3), imshow(cleanImage)
+title(<span class="string">'Filling the Holes'</span>);
+subplot(2,2,4), imshow(label)
+title(<span class="string">'All objects that were labeled'</span>);
+
+<span class="comment">% Print the entire array of images recorded at different positions.  This</span>
+<span class="comment">% is displaying how bwlabel() organized the data.</span>
+figure,
+subplot(3,3,1), imshow(label==1), title(<span class="string">'Object 1'</span>);
+subplot(3,3,2), imshow(label==2), title(<span class="string">'Object 2'</span>);
+subplot(3,3,3), imshow(label==3), title(<span class="string">'Object 3'</span>);
+subplot(3,3,4), imshow(label==4), title(<span class="string">'Object 4'</span>);
+subplot(3,3,5), imshow(label==5), title(<span class="string">'Object 5'</span>);
+subplot(3,3,6), imshow(label==6), title(<span class="string">'Object 6'</span>);
+subplot(3,3,7), imshow(label==7), title(<span class="string">'Object 7'</span>);
+subplot(3,3,8), imshow(label==8), title(<span class="string">'Object 8'</span>);
+subplot(3,3,9), imshow(label==9), title(<span class="string">'Object 9'</span>);
+</pre><img vspace="5" hspace="5" src="coin_counter_01.png" alt=""> <img vspace="5" hspace="5" src="coin_counter_02.png" alt=""> <h2 id="5">Assign each blob a different color to visually show the distinct blobs.</h2><pre class="codeinput">clean = imfill(binaryImage, <span class="string">'holes'</span>);
+redLabels = label2rgb(clean, <span class="string">'hsv'</span>, <span class="string">'k'</span>, <span class="string">'shuffle'</span>); <span class="comment">% pseudo random color labels</span>
+colorLabels = label2rgb(label, <span class="string">'hsv'</span>, <span class="string">'k'</span>, <span class="string">'shuffle'</span>);
+<span class="comment">%coloredLabels is an RGB image.</span>
+figure,
+subplot(2,2,1); imshow(redLabels);
+title(<span class="string">'Binary image is passed through rgb space'</span>);
+subplot(2,2,2); imshow(colorLabels);
+axis <span class="string">image</span>; <span class="comment">% Make sure image is not artificially stretched because of screen's spect ratio.</span>
+caption = sprintf(<span class="string">'Psudo colored labels, \nfrom label2rgb().\nBlobs are numbered \nfrom top to bottom, \nthen from left to right.'</span>);
+title(caption);
+</pre><img vspace="5" hspace="5" src="coin_counter_03.png" alt=""> <h2 id="6">Get all the blob properties.</h2><pre class="codeinput"><span class="comment">%logicalBW = logical(cleanBW);</span>
+L = bwconncomp(clean);
+blobMeasurements = regionprops(L, <span class="string">'all'</span>);
+numberOfBlobs = size(blobMeasurements, 1);
+
+<span class="comment">% bwboundaries() returns a cell array, where each cell contains the row/col</span>
+<span class="comment">% coordinates for an object in the image.  Plot the borders of all the</span>
+<span class="comment">% coins on the original grayscale image using the coordinates returned by</span>
+<span class="comment">% bwboundaries.</span>
+subplot (2,2,3); imshow(image);
+title(<span class="string">'Outlines, from bwboundaries()'</span>);
+axis <span class="string">image</span>; <span class="comment">% make sure image is not artificially stretched because of screen's aspect ratio.</span>
+hold <span class="string">on</span>;
+boundaries = bwboundaries(binaryImage);
+numberOfBoundaries = size(boundaries, 1);
+<span class="keyword">for</span> k = 1 : numberOfBoundaries
+    thisBoundary = boundaries{k};
+    plot(thisBoundary(:,2), thisBoundary(:,1), <span class="string">'g'</span>, <span class="string">'LineWidth'</span>, 1);
+<span class="keyword">end</span>
+hold <span class="string">off</span>;
+
+textFontSize = 14;
+labelShiftX = -7;
+blobECD = zeros(1, numberOfBlobs);
+<span class="comment">% Print header line in the command window.</span>
+fprintf(1, <span class="string">'Blob #            Mean   Intensity   Area      Perim  Centroid  Diameter\n'</span>);
+<span class="comment">% Loop over all blobs printing their measurements to the command window.</span>
+<span class="keyword">for</span> k = 1 : numberOfBlobs  <span class="comment">% Loop through all blobs.</span>
+    <span class="comment">% Find the mean of each blob.</span>
+    thisBlobsPixels = blobMeasurements(k).PixelIdxList; <span class="comment">% Get list of pixels in current blob.</span>
+    meanGL = mean(image(thisBlobsPixels)); <span class="comment">%Find mean intensity (in original image).</span>
+    blobArea = blobMeasurements(k).Area; <span class="comment">%Get centroid one at a time</span>
+    blobPerimeter = blobMeasurements(k).Perimeter;		<span class="comment">% Get perimeter.</span>
+    blobCentroid = blobMeasurements(k).Centroid;		<span class="comment">% Get centroid one at a time</span>
+    blobECD(k) = sqrt(4 * blobArea /pi); <span class="comment">%Compute Equivalent Circular Diameter.</span>
+    fprintf(1, <span class="string">'#%2d %17.1f %11.1f %8.1f %8.1f %8.1f %8.1f \n'</span>, k, meanGL, blobArea, blobPerimeter, blobCentroid, blobECD(k));
+    <span class="comment">% Put the "blob number" labels on the "boundaries" grayscale image</span>
+    <span class="comment">%text(blobCentroid(1) + labelShiftX, blobCentroid(2), num2str(k), 'FontSize', textFontSize, 'FontWeight', 'Bold');</span>
+<span class="keyword">end</span>
+</pre><pre class="codeoutput">Blob #            Mean   Intensity   Area      Perim  Centroid  Diameter
+# 1               0.7      2664.0    180.2     37.2    106.7     58.2 
+# 2               0.7      1870.0    150.8     56.1     49.8     48.8 
+# 3               0.6      2696.0    181.2     96.3    146.1     58.6 
+# 4               0.5      1824.0    148.3    110.1     84.9     48.2 
+# 5               0.7      2766.0    183.4    120.3    208.6     59.3 
+# 6               0.7      2538.0    175.6    148.6     34.4     56.8 
+# 7               0.6      2618.0    179.9    174.8    120.0     57.7 
+# 8               0.7      2568.0    177.3    216.9     70.8     57.2 
+# 9               0.8      1914.0    152.4    236.1    173.4     49.4 
+#10               0.8      1876.0    150.6    265.8    102.6     48.9 
+</pre><img vspace="5" hspace="5" src="coin_counter_04.png" alt=""> <h2 id="7">Count the values</h2><pre class="codeinput">coin = cleanImage;
+[L, Ne] = bwlabel(double(coin));
+prop = regionprops(L,<span class="string">'Area'</span>,<span class="string">'Centroid'</span>);
+total=0;
+<span class="keyword">for</span> n = 1:size(prop,1)
+    cent=prop(n).Centroid;
+    X=cent(1); Y=cent(2);
+    <span class="keyword">if</span> prop(n).Area&gt;2000
+        text(X-10, Y, <span class="string">'$0.05'</span>)
+        total=total+5;
+    <span class="keyword">else</span>
+        total=total+10;
+        text(X-10,Y,<span class="string">'$0.10'</span>)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+hold <span class="string">on</span>
+title([<span class="string">'Total of money: '</span>,num2str(total),<span class="string">'Cents'</span>])
+</pre><img vspace="5" hspace="5" src="coin_counter_05.png" alt=""> <h2 id="8">Interesting observations</h2><p>This is an iteration I found that is able to separate the data between i and j.  Then it is supposed to label every element according to its value based on its area measured in the image for each object. It did not behave as advertised however, the program does compile and it does return an image of one of the dimes captured in the image in figure 3. I perhaps made an error in translating the intended use however, I found the behavior useful. for j=1:max(max(label))     [row, col] = find(label==j);     length = max(row)-min(row)+2;     width=max(col)-min(col)+2;     target=uint8(zeros([length width]));     sy=min(col)-1;     sx=min(row)-1; end</p><p>for i=1:size(row,1)     x=row(i,1)-sx;     y=col(i,1)-sy;     target(x,y)= A(row(i,1), col(i,1)); end mytitle=strcat('Object Number:',num2str(j)); figure,imshow(target);title(mytitle);</p><h2 id="9">Poor attempt at trying to transpose the image</h2><pre class="codeinput"><span class="comment">%level = 0.5; %</span>
+<span class="comment">%figure, imshow(im1);</span>
+
+<span class="comment">%coinImage = rgb2gray(coinImage);</span>
+<span class="comment">% coinImage = double(coinImage);</span>
+<span class="comment">%</span>
+<span class="comment">% SH = [-1 -2 -1</span>
+<span class="comment">%       0 0 0</span>
+<span class="comment">%       1 2 1];</span>
+<span class="comment">%</span>
+<span class="comment">% SV = [-1 0 1</span>
+<span class="comment">%      -1 0 1</span>
+<span class="comment">%      -1 0 1];</span>
+<span class="comment">%</span>
+<span class="comment">% im2 = imfilter(coinImage, SH,'corr');</span>
+<span class="comment">% figure, imshow(im2);</span>
+<span class="comment">% im3 = filter2(SV, coinImage);</span>
+<span class="comment">% figure, imshow(im3);</span>
+<span class="comment">% im4 = sqrt((im2.^2+im3.^2)/2);</span>
+<span class="comment">% imfill(im4);</span>
+<span class="comment">% BW = filter2(fspecial('sobel'),coinImage);</span>
+<span class="comment">% min_matrix = min(BW(:));</span>
+<span class="comment">% max_matrix = max(BW(:));</span>
+<span class="comment">% K = mat2gray(BW);</span>
+<span class="comment">% min_image = min(K(:));</span>
+<span class="comment">% max_image = max(K(:));</span>
+<span class="comment">%compliment = imcomplement(BW);</span>
+<span class="comment">% [numrows, numcols] = size(coinImage);</span>
+<span class="comment">% resizeIm = imresize(coinImage, [255 255]);</span>
+<span class="comment">% adjIm = imadjust(resizeIm,[0.3 0.7],[]);</span>
+<span class="comment">% im = double(adjIm);</span>
+<span class="comment">% mx = max(max(adjIm));</span>
+<span class="comment">% mn = min(min(adjIm));</span>
+<span class="comment">% im2  = (adjIm - mn) ./ (mx - mn) * 255;</span>
+<span class="comment">% BW = rgb2gray(adjIm);</span>
+
+
+<span class="comment">%negativeImage = 127.5 - BW;</span>
+<span class="comment">%edge(BW)</span>
+<span class="comment">%figure, imshow(im4);</span>
+
+
+<span class="comment">%noiseFix = filter2(fspecial('average'),BW)/200; % K-average</span>
+<span class="comment">%noiseFix = medfilt2(BW);</span>
+<span class="comment">%fix = imadjust(BW, [0.7 0.9], []);</span>
+<span class="comment">%imcomplement(noiseFix)</span>
+<span class="comment">%coin1 = imbinarize(noiseFix, level);%(BW, level);</span>
+<span class="comment">%T=0.1;</span>
+
+<span class="comment">%edgeDetect = edge(coin1,'Prewitt');</span>
+<span class="comment">%imfill(coin1);</span>
+<span class="comment">%imshow(edgeDetect);</span>
+</pre><h2 id="10">This idea wasn't nessesary.  Fixed with im2bw().</h2><p>Fill image regions and holes</p><pre class="codeinput"><span class="comment">%coin2 = imfill(coin1, 'holes');</span>
+<span class="comment">% %% Label and count connected components</span>
+<span class="comment">% coin2 = logical([1 1 1 0 0 0 0 0</span>
+<span class="comment">%               1 1 1 0 1 1 0 0</span>
+<span class="comment">%               1 1 1 0 1 1 0 0</span>
+<span class="comment">%               1 1 1 0 0 0 1 0</span>
+<span class="comment">%               1 1 1 0 0 0 1 0</span>
+<span class="comment">%               1 1 1 0 0 0 1 0</span>
+<span class="comment">%               1 1 1 0 0 1 1 0</span>
+<span class="comment">%               1 1 1 0 0 0 0 0]);</span>
+<span class="comment">% L = bwlabel(coin2,4);</span>
+<span class="comment">% [r,c] = find(L == 2);</span>
+<span class="comment">% [L, NUM] = bwlabel(double(coin2));</span>
+<span class="comment">%figure, imshowpair(coinImage,coin2, 'montage');</span>
+
+<span class="comment">%figure, imhist(coin1);</span>
+</pre><h2 id="11">This idea is for dealing with color images</h2><pre class="codeinput"><span class="comment">%Pre-process the RGB Color space</span>
+<span class="comment">% rmat = fix(:,:,1);</span>
+<span class="comment">% gmat = fix(:,:,1);</span>
+<span class="comment">% bmat = fix(:,:,3);</span>
+<span class="comment">% levelr = 0.63;</span>
+<span class="comment">% levelg = 0.5;</span>
+<span class="comment">% levelb = 0.4;</span>
+<span class="comment">% i1 = im2bw(rmat, levelr);</span>
+<span class="comment">% i2 = im2bw(gmat, levelb);</span>
+<span class="comment">% i3 = im2bw(bmat, levelb);</span>
+<span class="comment">% Isum = (i1&amp;i2&amp;i3);</span>
+
+<span class="comment">% figure;</span>
+<span class="comment">% subplot(2,2,1), imshow(i1)%(rmat);</span>
+<span class="comment">% title('Red Plane');</span>
+<span class="comment">% subplot(2,2,2), imshow(i2)%(gmat);</span>
+<span class="comment">% title('Green Plane');</span>
+<span class="comment">% subplot(2,2,3), imshow(i3)%(bmat);</span>
+<span class="comment">% title('Blue Plane');</span>
+<span class="comment">% subplot(2,2,4), imshow(Isum)%(coinImage);</span>
+<span class="comment">% title('Sum of all planes');%('Original Image');</span>
+
+<span class="comment">%imadjust(</span>
+<span class="comment">% Icomp = imcomplement(Isum);</span>
+<span class="comment">% Ifilled = imfill(Icomp, 'holes');</span>
+<span class="comment">% figure, imshow(Ifilled);</span>
+<span class="comment">% %%</span>
+<span class="comment">% se = strel('disk',250);</span>
+<span class="comment">% Iopenned = imopen(Ifilled,se);</span>
+<span class="comment">% imshow(Iopenned);</span>
+</pre><h2 id="12">Measure properties of image regions</h2><pre class="codeinput"><span class="comment">%prop = regionprops(L, 'Area','Centroid');</span>
+</pre><h2 id="13">Counter</h2><pre class="codeinput"><span class="comment">%total = 0;</span>
+</pre><h2 id="14">Don't use / test only</h2><p>Show image</p><pre class="codeinput"><span class="comment">%imshow(imread('coins.png')); hold on</span>
+</pre><h2 id="15">Labeling gone wrong...</h2><p>for n = 1:size(prop,1) %For 1 to Tatal number of coins     cent = prop(n).Centroid;     X = cent(1); Y = cent(2);     if prop(n).Area &gt; 2000         text(X-10,Y,'5 C')         total = total+5;     else         total =total+10;         text(X-10,Y,'10 C')     end end hold on</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear all
+close all
+
+
+%% COUNT COINS
+
+%% Convert the coin image
+% When the image is read in it gets converted into a black and white
+% transposed image and gets cleaned up with the imfill to eliminate any stand alone
+% pixels.  The label variable is set to automatically choose how to label
+% the objects in the image.  To ensure the label function is working
+% correctly, im1 is set to equal the first image it lables as 1 not
+% counting zero.  
+normalizedThresholdValue = 0.4; % In range 0 to 1.
+image = imread('coins.png');
+image = mat2gray(image);
+binaryImage = im2bw(image, normalizedThresholdValue);% One way to threshold to binary
+%binaryImage = im2bw(image);
+cleanImage = imfill(binaryImage, 'holes');
+label = bwlabel(cleanImage,8);
+logicalBW = logical(label);
+
+thresholdValue = normalizedThresholdValue * max(max(image)); % Gray Levels.
+
+%max(max(logicalLabel));
+%im1 = (label==10); 
+
+%% Print the results
+figure;
+subplot(2,2,1), imshow(image)
+title('Original image');
+subplot(2,2,2), imshow(binaryImage)
+title('Black and white');
+subplot(2,2,3), imshow(cleanImage)
+title('Filling the Holes');
+subplot(2,2,4), imshow(label)
+title('All objects that were labeled');
+
+% Print the entire array of images recorded at different positions.  This
+% is displaying how bwlabel() organized the data.
+figure, 
+subplot(3,3,1), imshow(label==1), title('Object 1');
+subplot(3,3,2), imshow(label==2), title('Object 2');
+subplot(3,3,3), imshow(label==3), title('Object 3');
+subplot(3,3,4), imshow(label==4), title('Object 4');
+subplot(3,3,5), imshow(label==5), title('Object 5');
+subplot(3,3,6), imshow(label==6), title('Object 6');
+subplot(3,3,7), imshow(label==7), title('Object 7');
+subplot(3,3,8), imshow(label==8), title('Object 8');
+subplot(3,3,9), imshow(label==9), title('Object 9');
+
+%% Assign each blob a different color to visually show the distinct blobs.
+clean = imfill(binaryImage, 'holes');
+redLabels = label2rgb(clean, 'hsv', 'k', 'shuffle'); % pseudo random color labels
+colorLabels = label2rgb(label, 'hsv', 'k', 'shuffle');
+%coloredLabels is an RGB image.
+figure, 
+subplot(2,2,1); imshow(redLabels);
+title('Binary image is passed through rgb space');
+subplot(2,2,2); imshow(colorLabels);
+axis image; % Make sure image is not artificially stretched because of screen's spect ratio.
+caption = sprintf('Psudo colored labels, \nfrom label2rgb().\nBlobs are numbered \nfrom top to bottom, \nthen from left to right.');
+title(caption);
+
+%% Get all the blob properties.
+
+%logicalBW = logical(cleanBW);
+L = bwconncomp(clean);
+blobMeasurements = regionprops(L, 'all');
+numberOfBlobs = size(blobMeasurements, 1);
+
+% bwboundaries() returns a cell array, where each cell contains the row/col
+% coordinates for an object in the image.  Plot the borders of all the
+% coins on the original grayscale image using the coordinates returned by
+% bwboundaries.
+subplot (2,2,3); imshow(image); 
+title('Outlines, from bwboundaries()');
+axis image; % make sure image is not artificially stretched because of screen's aspect ratio.
+hold on;
+boundaries = bwboundaries(binaryImage);
+numberOfBoundaries = size(boundaries, 1);
+for k = 1 : numberOfBoundaries
+    thisBoundary = boundaries{k};
+    plot(thisBoundary(:,2), thisBoundary(:,1), 'g', 'LineWidth', 1);
+end
+hold off;
+
+textFontSize = 14;
+labelShiftX = -7;
+blobECD = zeros(1, numberOfBlobs);
+% Print header line in the command window.
+fprintf(1, 'Blob #            Mean   Intensity   Area      Perim  Centroid  Diameter\n');
+% Loop over all blobs printing their measurements to the command window.
+for k = 1 : numberOfBlobs  % Loop through all blobs.
+    % Find the mean of each blob.
+    thisBlobsPixels = blobMeasurements(k).PixelIdxList; % Get list of pixels in current blob.
+    meanGL = mean(image(thisBlobsPixels)); %Find mean intensity (in original image).
+    blobArea = blobMeasurements(k).Area; %Get centroid one at a time
+    blobPerimeter = blobMeasurements(k).Perimeter;		% Get perimeter.
+    blobCentroid = blobMeasurements(k).Centroid;		% Get centroid one at a time
+    blobECD(k) = sqrt(4 * blobArea /pi); %Compute Equivalent Circular Diameter.
+    fprintf(1, '#%2d %17.1f %11.1f %8.1f %8.1f %8.1f %8.1f \n', k, meanGL, blobArea, blobPerimeter, blobCentroid, blobECD(k));
+    % Put the "blob number" labels on the "boundaries" grayscale image
+    %text(blobCentroid(1) + labelShiftX, blobCentroid(2), num2str(k), 'FontSize', textFontSize, 'FontWeight', 'Bold');
+end
+
+%% Count the values
+coin = cleanImage;
+[L, Ne] = bwlabel(double(coin));
+prop = regionprops(L,'Area','Centroid');
+total=0;
+for n = 1:size(prop,1)
+    cent=prop(n).Centroid;
+    X=cent(1); Y=cent(2);
+    if prop(n).Area>2000
+        text(X-10, Y, '$0.05')
+        total=total+5;
+    else
+        total=total+10;
+        text(X-10,Y,'$0.10')
+    end
+end
+hold on
+title(['Total of money: ',num2str(total),'Cents'])
+
+%% Interesting observations
+% This is an iteration I found that is able to separate the data between i
+% and j.  Then it is supposed to label every element according to its 
+% value based on its area measured in the image for each object. It did not
+% behave as advertised however, the program does compile and it does return
+% an image of one of the dimes captured in the image in figure 3.    
+% I perhaps made an error in translating the intended use however, I found
+% the behavior useful.
+% for j=1:max(max(label))
+%     [row, col] = find(label==j);
+%     length = max(row)-min(row)+2;
+%     width=max(col)-min(col)+2;
+%     target=uint8(zeros([length width]));
+%     sy=min(col)-1;
+%     sx=min(row)-1;
+% end
+% 
+% for i=1:size(row,1)
+%     x=row(i,1)-sx;
+%     y=col(i,1)-sy;
+%     target(x,y)= A(row(i,1), col(i,1));
+% end
+% mytitle=strcat('Object Number:',num2str(j));
+% figure,imshow(target);title(mytitle);
+
+
+%% Poor attempt at trying to transpose the image
+%level = 0.5; % 
+%figure, imshow(im1);
+
+%coinImage = rgb2gray(coinImage);
+% coinImage = double(coinImage);
+% 
+% SH = [-1 -2 -1
+%       0 0 0
+%       1 2 1];
+% 
+% SV = [-1 0 1
+%      -1 0 1
+%      -1 0 1];
+%  
+% im2 = imfilter(coinImage, SH,'corr');
+% figure, imshow(im2);
+% im3 = filter2(SV, coinImage);
+% figure, imshow(im3);
+% im4 = sqrt((im2.^2+im3.^2)/2);
+% imfill(im4);
+% BW = filter2(fspecial('sobel'),coinImage);
+% min_matrix = min(BW(:));
+% max_matrix = max(BW(:));
+% K = mat2gray(BW);
+% min_image = min(K(:));
+% max_image = max(K(:));
+%compliment = imcomplement(BW);
+% [numrows, numcols] = size(coinImage);
+% resizeIm = imresize(coinImage, [255 255]);
+% adjIm = imadjust(resizeIm,[0.3 0.7],[]);
+% im = double(adjIm);
+% mx = max(max(adjIm));
+% mn = min(min(adjIm));
+% im2  = (adjIm - mn) ./ (mx - mn) * 255;
+% BW = rgb2gray(adjIm);
+
+
+%negativeImage = 127.5 - BW;
+%edge(BW)
+%figure, imshow(im4);
+
+
+%noiseFix = filter2(fspecial('average'),BW)/200; % K-average
+%noiseFix = medfilt2(BW);
+%fix = imadjust(BW, [0.7 0.9], []);
+%imcomplement(noiseFix)
+%coin1 = imbinarize(noiseFix, level);%(BW, level);
+%T=0.1;
+
+%edgeDetect = edge(coin1,'Prewitt');
+%imfill(coin1);
+%imshow(edgeDetect);
+
+%% This idea wasn't nessesary.  Fixed with im2bw().
+% Fill image regions and holes
+%coin2 = imfill(coin1, 'holes');
+% %% Label and count connected components
+% coin2 = logical([1 1 1 0 0 0 0 0
+%               1 1 1 0 1 1 0 0
+%               1 1 1 0 1 1 0 0
+%               1 1 1 0 0 0 1 0
+%               1 1 1 0 0 0 1 0
+%               1 1 1 0 0 0 1 0
+%               1 1 1 0 0 1 1 0
+%               1 1 1 0 0 0 0 0]);
+% L = bwlabel(coin2,4);
+% [r,c] = find(L == 2);
+% [L, NUM] = bwlabel(double(coin2));
+%figure, imshowpair(coinImage,coin2, 'montage');
+
+%figure, imhist(coin1);
+
+%% This idea is for dealing with color images
+%Pre-process the RGB Color space
+% rmat = fix(:,:,1);
+% gmat = fix(:,:,1);
+% bmat = fix(:,:,3);
+% levelr = 0.63;
+% levelg = 0.5;
+% levelb = 0.4;
+% i1 = im2bw(rmat, levelr);
+% i2 = im2bw(gmat, levelb);
+% i3 = im2bw(bmat, levelb);
+% Isum = (i1&i2&i3);
+
+% figure;
+% subplot(2,2,1), imshow(i1)%(rmat);
+% title('Red Plane');
+% subplot(2,2,2), imshow(i2)%(gmat);
+% title('Green Plane');
+% subplot(2,2,3), imshow(i3)%(bmat);
+% title('Blue Plane');
+% subplot(2,2,4), imshow(Isum)%(coinImage);
+% title('Sum of all planes');%('Original Image');
+
+%imadjust(
+% Icomp = imcomplement(Isum);
+% Ifilled = imfill(Icomp, 'holes');
+% figure, imshow(Ifilled);
+% %%
+% se = strel('disk',250);
+% Iopenned = imopen(Ifilled,se);
+% imshow(Iopenned);
+%% Measure properties of image regions
+%prop = regionprops(L, 'Area','Centroid');
+%% Counter
+%total = 0;
+%% Don't use / test only
+% Show image 
+%imshow(imread('coins.png')); hold on
+
+%% Labeling gone wrong...
+% for n = 1:size(prop,1) %For 1 to Tatal number of coins
+%     cent = prop(n).Centroid;
+%     X = cent(1); Y = cent(2);
+%     if prop(n).Area > 2000
+%         text(X-10,Y,'5 C')
+%         total = total+5;
+%     else
+%         total =total+10;
+%         text(X-10,Y,'10 C')
+%     end
+% end
+% hold on
+        
+##### SOURCE END #####
+--></body></html>

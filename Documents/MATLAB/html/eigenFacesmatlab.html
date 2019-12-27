@@ -1,0 +1,512 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Matt Hurt Project 1 report</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-05"><meta name="DC.source" content="eigenFacesmatlab.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Matt Hurt Project 1 report</h1><!--introduction--><p>In this report I managed to successfully compute the eigan values to obtain a portion of the full algorithm for face recognition.  My approach to accomplishing this task was to read in in each image and set each one to an N by N matrix.  I did this individually for each one, which is why there is double code.  My initial approach led me to testing each input image one-by-one just to make sure the intended effect of correct images being read.  I then store the images in memory by its index.  I could have run in a second application but I figured it would be faster to save time by having everything read inside one file.  I sourced this code from https://www.mathworks.com/matlabcentral/fileexchange/45915-eigenfaces-algorithm</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Clear workspace variables</a></li><li><a href="#2">Resize all M faces to N*N</a></li><li><a href="#3">store</a></li><li><a href="#4">Calculate average face</a></li><li><a href="#5">compute mean</a></li><li><a href="#6">normalize (remove mean)</a></li><li><a href="#7">Create matrix A of face each row --&gt; generate A = [ img1(:) img2(:)...imgM(:) ];</a></li><li><a href="#8">Compute the eigen values and vecters</a></li><li><a href="#9">Facial Recognition</a></li><li><a href="#10">Classify image 1</a></li><li><a href="#11">Classify image 2</a></li><li><a href="#12">Classify image 3</a></li></ul></div><h2 id="1">Clear workspace variables</h2><pre class="codeinput">clear <span class="string">all</span>, close <span class="string">all</span>;
+</pre><h2 id="2">Resize all M faces to N*N</h2><p>I assumed that I could read individual images and then resize them for an NxN matrix. However, I learned about the larger data set late and only had the smaller dataset that I was testing.</p><pre class="codeinput">N=50  ; <span class="comment">% image size</span>
+M=4  ;<span class="comment">% number faces</span>
+<span class="comment">% Input image 1</span>
+img1 = imread(<span class="string">'testing/person01_01a.png'</span>);
+img1=mat2gray(img1);
+img1=imresize(img1,[N N] );
+figure(1),imshow(img1,<span class="string">'Initialmagnification'</span>,<span class="string">'fit'</span>);title(<span class="string">'img1'</span>)
+<span class="comment">% Input image 2</span>
+img2 = imread(<span class="string">'testing/person01_01d.png'</span>);
+img2=mat2gray(img2);
+img2=imresize(img2,[N N] );
+figure(2),imshow(img2,<span class="string">'Initialmagnification'</span>,<span class="string">'fit'</span>);title(<span class="string">'img2'</span>)
+<span class="comment">% Input image 3</span>
+img3 = imread(<span class="string">'testing/person02_01b.png'</span>);
+img3=mat2gray(img3);
+img3=imresize(img3,[N N] );
+figure(3),imshow(img3,<span class="string">'Initialmagnification'</span>,<span class="string">'fit'</span>);title(<span class="string">'img3'</span>)
+<span class="comment">% Input image 4</span>
+img4=imread(<span class="string">'testing/person03_01c.png'</span>);
+img4=mat2gray(img4);
+img4=imresize(img4,[N N] );
+figure(4),imshow(img4,<span class="string">'Initialmagnification'</span>,<span class="string">'fit'</span>);title(<span class="string">'img4'</span>)
+</pre><pre class="codeoutput error">Error using imread&gt;get_full_filename (line 566)
+File "testing/person01_01a.png" does not exist.
+
+Error in imread (line 375)
+    fullname = get_full_filename(filename);
+
+Error in eigenFacesmatlab (line 23)
+img1 = imread('testing/person01_01a.png');
+</pre><h2 id="3">store</h2><p>I found this resource on Ma</p><pre class="codeinput">st.names = {<span class="string">'img1'</span>, <span class="string">'img2'</span>, <span class="string">'img3'</span>, <span class="string">'img4'</span>};<span class="comment">%'exface1','exface2'</span>
+st.data{1} = img1;
+st.data{2} = img2;
+st.data{3} = img3;
+st.data{4} = img4;
+<span class="comment">%st.data{5} = extraface1;</span>
+<span class="comment">%st.data{6} = extraface2;</span>
+
+z  = [img1 img2 img3 img4]; <span class="comment">% extraface1 extraface2</span>
+figure(6),imshow(z,<span class="string">'Initialmagnification'</span>,<span class="string">'fit'</span>);title(<span class="string">'z'</span>)
+
+<span class="comment">%save classFile st;</span>
+<span class="comment">%clear all, close all;</span>
+<span class="comment">%load classFile;</span>
+</pre><h2 id="4">Calculate average face</h2><pre class="codeinput">M=4;N=50;
+avImg=zeros(N);
+z  = [ st.data{1} st.data{2} st.data{3} st.data{4} ];
+figure(1),imshow(z,<span class="string">'Initialmagnification'</span>,<span class="string">'fit'</span>);title(<span class="string">'z org'</span>)
+</pre><h2 id="5">compute mean</h2><pre class="codeinput"><span class="keyword">for</span> k=1:M
+    st.data{k} = im2single(st.data{k});
+    avImg   = avImg  + (1/M)*st.data{k};
+<span class="keyword">end</span>
+
+figure(2),imshow(avImg,<span class="string">'Initialmagnification'</span>,<span class="string">'fit'</span>);title(<span class="string">'average'</span>)
+</pre><h2 id="6">normalize (remove mean)</h2><pre class="codeinput"><span class="keyword">for</span> k=1:M
+    st.dataAvg{k}  = st.data{k} -avImg;
+<span class="keyword">end</span>
+
+z  = [ st.dataAvg{1}  st.dataAvg{2} st.dataAvg{3} st.dataAvg{4}];
+figure(3),imshow(z,<span class="string">'Initialmagnification'</span>,<span class="string">'fit'</span>);title(<span class="string">'z average'</span>)
+</pre><h2 id="7">Create matrix A of face each row --&gt; generate A = [ img1(:) img2(:)...imgM(:) ];</h2><pre class="codeinput">A = zeros(N*N,M);<span class="comment">% (N*N)*M   2500*4</span>
+<span class="keyword">for</span> k=1:M
+    A(:,k) = st.dataAvg{k}(:);
+<span class="keyword">end</span>
+<span class="comment">% covariance matrix small dimension (transposed)</span>
+C = A'*A;
+figure(4),imagesc(C);title(<span class="string">'covariance'</span>)
+</pre><h2 id="8">Compute the eigen values and vecters</h2><p>Calculate small dimension to compute the faces needed to go back to higher dimension.</p><pre class="codeinput">[Veigvec, Deigval]  = eig(C);<span class="comment">% v M*M e M*M only diagonal 4 eigen values</span>
+<span class="comment">% eigan face in large dimension  A*veigvec is eigen vector of Clarge</span>
+Vlarge = A*Veigvec;<span class="comment">% 2500*M*M*M  =2500 *M</span>
+<span class="comment">% reshape to eigen face</span>
+eigenfaces=[];
+<span class="keyword">for</span> k=1:M
+    c  = Vlarge(:,k);
+    eigenfaces{k} = reshape(c,N,N);
+<span class="keyword">end</span>
+x=diag(Deigval);
+[xc,xci]=sort(x,<span class="string">'descend'</span>);<span class="comment">% largest eigenval</span>
+z  = [eigenfaces{xci(1)} eigenfaces{xci(2)}
+    eigenfaces{xci(3)} eigenfaces{xci(4)}];
+figure(5),imshow(z,<span class="string">'Initialmagnification'</span>,<span class="string">'fit'</span>);title(<span class="string">'eigenfaces'</span>)
+<span class="comment">%figure(99),plot(z);</span>
+<span class="comment">% weights</span>
+nsel = 4; <span class="comment">% select  eigen faces</span>
+<span class="keyword">for</span> mi =1:M  <span class="comment">% image number</span>
+  <span class="keyword">for</span> k=1:nsel   <span class="comment">% eigen face for coeff number</span>
+    wi(mi,k) =   sum(A(:,mi).* eigenfaces{xci(k)}(:)) ;
+    <span class="comment">%figure, plot(wi(mi,k));title('weight plots');</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>
+figure(001),plot(mi),plot(k),plot(wi);
+</pre><h2 id="9">Facial Recognition</h2><p>This task is performed exclusively on the faces from the original smaller dataset given with the assignment.  I wanted to be able to determine if the tests were being performed on the correct images from the enrolled set of images.  The program was able to match all of the face images with their hosts.  I have been unable to determine if the program was able to make any wrond detections because of the accuracy model I gave it to calculate.</p><h2 id="10">Classify image 1</h2><pre class="codeinput"><span class="comment">%There wasn't much suprise to the results here.  The matching was obvious</span>
+<span class="comment">%and didn't tell me much after the application completed itself.  However,</span>
+<span class="comment">%This might change after I use a second image to see the results.</span>
+
+<span class="comment">% folder work C:\Users\michaels.DSI\Desktop\faces\class\</span>
+imlist = dir(<span class="string">'./enroll/*.png'</span>); <span class="comment">% List folders contents and returns attributes about enroll</span>
+<span class="comment">%im = imread(['./enroll/',imlist(1).name]);</span>
+testFaceim1 = imread([<span class="string">'./enroll/'</span>,imlist(1).name]);
+testFaceim1  = mat2gray(testFaceim1);
+testFaceim1 = imresize(testFaceim1,[N N]);
+testFaceim1   =  im2single(testFaceim1);
+<span class="comment">%testFaceim1 =  st.data{1}; test</span>
+figure(6), imshow(testFaceim1,<span class="string">'Initialmagnification'</span>,<span class="string">'fit'</span>);
+title(<span class="string">'new test face img1'</span>)
+Aface = testFaceim1(:)-avImg(:); <span class="comment">% normilized face</span>
+<span class="keyword">for</span>(tt=1:nsel)
+  wface(tt)  =  sum(Aface.* eigenfaces{xci(tt)}(:)) ;
+<span class="keyword">end</span>
+figure, plot(wface); title(<span class="string">'Weight of image 1'</span>);
+
+<span class="comment">% compute distance</span>
+diffWeight = zeros(M);
+<span class="keyword">for</span> mi=1:M
+    fsumcur=0;
+    <span class="keyword">for</span>(tt=1:nsel)
+        fsumcur = fsumcur + (wface(tt)^2 - wi(mi,tt)^2);
+    <span class="keyword">end</span>
+    diffWeight(mi) =   sqrt( fsumcur);
+<span class="keyword">end</span>
+num_imt = length(imlist);
+
+<span class="comment">% Calculation for CMC curve</span>
+<span class="keyword">for</span> tt = (1:M)
+    cmc(tt) = sum(diffWeight(1:tt))/num_imt;
+<span class="keyword">end</span>
+    figure(98),plot(cmc); title(<span class="string">'CMC CURVE img1'</span>)
+    <span class="comment">%plot(diffWeights(:,2));</span>
+</pre><h2 id="11">Classify image 2</h2><p>This portion of the code is awesome to me.  It tells me that I achieved face recognition in some respect.  The algorithm was still able to locate this gentlemans face even though the original image was distorted. Unfortunately I did not perform the affect of comparing the images with the CMC curve to test for accuracy of the images.  Despite my results, I thouroughly enjoyed the sucess of some aspect of face recognition occuring.</p><pre class="codeinput">imlist2 = dir(<span class="string">'./enroll/*.png'</span>); <span class="comment">% List folders contents and returns attributes about enroll</span>
+<span class="comment">%im = imread(['./enroll/',imlist(1).name]);</span>
+testFaceim2 = imread([<span class="string">'./enroll/'</span>,imlist2(2).name]);
+<span class="comment">%testFaceim2 = imread('100_2120.jpg','jpg');</span>
+testFaceim2 = mat2gray(testFaceim2);
+testFaceim2 = imresize(testFaceim2,[N N]);
+testFaceim2 = im2single(testFaceim2);
+figure(7), imshow(testFaceim2,<span class="string">'Initialmagnification'</span>,<span class="string">'fit'</span>);
+title(<span class="string">'test face img2'</span>)
+Aface = testFaceim2(:)-avImg(:);
+<span class="keyword">for</span>(tt=1:nsel)
+  wface(tt)  =  sum(Aface.* eigenfaces{xci(tt)}(:)) ;
+<span class="keyword">end</span>
+figure(999),plot(wface); title(<span class="string">'Wieght of img 2'</span>);
+
+<span class="comment">% compute distance</span>
+<span class="keyword">for</span> mi=1:M
+    fsumcur=0;
+    <span class="keyword">for</span>(tt=1:nsel)
+        fsumcur = fsumcur + (wface(tt) - wi(mi,tt)).^2;
+    <span class="keyword">end</span>
+    diffWeight(mi) = sqrt(fsumcur);
+<span class="keyword">end</span>
+
+num_imt = length(imlist2);
+
+<span class="comment">% Calculation for CMC curve</span>
+<span class="keyword">for</span> tt = 1:10
+    cmc2(tt) = sum(diffWeight(1:tt))/num_imt;
+<span class="keyword">end</span>
+    figure(97),plot(cmc2); title(<span class="string">'CMC CURVE img2'</span>)
+</pre><h2 id="12">Classify image 3</h2><p>Like image 2, the algorithm matched up the appropriate faces.  Couldn't be more ectatic. folder work C:\Users\michaels.DSI\Desktop\faces\class\</p><pre class="codeinput">imlist3 = dir(<span class="string">'./enroll/*.png'</span>); <span class="comment">% List folders contents and returns attributes about enroll</span>
+<span class="comment">%im = imread(['./enroll/',imlist(1).name]);</span>
+testFaceim3 = imread([<span class="string">'./enroll/'</span>,imlist(3).name]);
+testFaceim3  = mat2gray(testFaceim3);
+testFaceim3 = imresize(testFaceim3,[N N]);
+testFaceim3   =  im2single(testFaceim3);
+<span class="comment">%testFaceim1 =  st.data{1}; test</span>
+Aface = testFaceim1(:)-avImg(:); <span class="comment">% normilized face</span>
+figure(9), imshow(testFaceim3,<span class="string">'Initialmagnification'</span>,<span class="string">'fit'</span>);
+title(<span class="string">'test face testFaceim3'</span>)
+Aface = testFaceim3(:)-avImg(:);
+wface=[];
+<span class="keyword">for</span>(tt=1:nsel)
+  wface(tt)  =  sum(Aface.* eigenfaces{xci(tt)}(:)) ;
+<span class="keyword">end</span>
+figure(8), plot(wface); title(<span class="string">'Weight of image 3'</span>);
+
+<span class="comment">% compute distance</span>
+<span class="keyword">for</span> mi=1:M
+    fsumcur=0;
+    <span class="keyword">for</span>(tt=1:nsel)
+        fsumcur = fsumcur + (wface(tt) -wi(mi,tt)).^2;
+    <span class="keyword">end</span>
+    diffWeights(mi) = sqrt( fsumcur);
+<span class="keyword">end</span>
+diffWeights = diffWeights.';
+
+num_imt = length(imlist3);
+
+<span class="comment">% Calculation for CMC curve</span>
+<span class="keyword">for</span> tt = 1:M
+    cmc3(tt) = sum(diffWeights(1:tt))/num_imt;
+<span class="keyword">end</span>
+    figure(970),plot(cmc3); title(<span class="string">'CMC CURVE img3'</span>)
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Matt Hurt Project 1 report
+% In this report I managed to successfully compute the eigan values to
+% obtain a portion of the full algorithm for face recognition.  My approach
+% to accomplishing this task was to read in in each image and set each one
+% to an N by N matrix.  I did this individually for each one, which is why
+% there is double code.  My initial approach led me to testing each input
+% image one-by-one just to make sure the intended effect of correct images
+% being read.  I then store the images in memory by its index.  I could
+% have run in a second application but I figured it would be faster to save
+% time by having everything read inside one file.  I sourced this code from
+% https://www.mathworks.com/matlabcentral/fileexchange/45915-eigenfaces-algorithm
+
+%% Clear workspace variables
+clear all, close all;
+
+%% Resize all M faces to N*N
+% I assumed that I could read individual images and then resize them for
+% an NxN matrix. However, I learned about the larger data set late and only
+% had the smaller dataset that I was testing.  
+N=50  ; % image size
+M=4  ;% number faces
+% Input image 1
+img1 = imread('testing/person01_01a.png');
+img1=mat2gray(img1);
+img1=imresize(img1,[N N] );
+figure(1),imshow(img1,'Initialmagnification','fit');title('img1')
+% Input image 2
+img2 = imread('testing/person01_01d.png');
+img2=mat2gray(img2);
+img2=imresize(img2,[N N] );
+figure(2),imshow(img2,'Initialmagnification','fit');title('img2')
+% Input image 3
+img3 = imread('testing/person02_01b.png');
+img3=mat2gray(img3);
+img3=imresize(img3,[N N] );
+figure(3),imshow(img3,'Initialmagnification','fit');title('img3')
+% Input image 4
+img4=imread('testing/person03_01c.png');
+img4=mat2gray(img4);
+img4=imresize(img4,[N N] );
+figure(4),imshow(img4,'Initialmagnification','fit');title('img4')
+
+%% store
+% I found this resource on Ma
+st.names = {'img1', 'img2', 'img3', 'img4'};%'exface1','exface2'
+st.data{1} = img1;
+st.data{2} = img2;
+st.data{3} = img3;
+st.data{4} = img4;
+%st.data{5} = extraface1;
+%st.data{6} = extraface2;
+
+z  = [img1 img2 img3 img4]; % extraface1 extraface2
+figure(6),imshow(z,'Initialmagnification','fit');title('z')
+
+%save classFile st;
+%clear all, close all;
+%load classFile;
+
+%% Calculate average face
+M=4;N=50;
+avImg=zeros(N);
+z  = [ st.data{1} st.data{2} st.data{3} st.data{4} ]; 
+figure(1),imshow(z,'Initialmagnification','fit');title('z org')
+%% compute mean
+for k=1:M
+    st.data{k} = im2single(st.data{k});
+    avImg   = avImg  + (1/M)*st.data{k};
+end
+
+figure(2),imshow(avImg,'Initialmagnification','fit');title('average')
+
+%% normalize (remove mean)
+for k=1:M
+    st.dataAvg{k}  = st.data{k} -avImg;
+end
+
+z  = [ st.dataAvg{1}  st.dataAvg{2} st.dataAvg{3} st.dataAvg{4}];
+figure(3),imshow(z,'Initialmagnification','fit');title('z average')
+
+
+%% Create matrix A of face each row REPLACE_WITH_DASH_DASH> generate A = [ img1(:) img2(:)...imgM(:) ];
+A = zeros(N*N,M);% (N*N)*M   2500*4
+for k=1:M
+    A(:,k) = st.dataAvg{k}(:);
+end
+% covariance matrix small dimension (transposed)
+C = A'*A;
+figure(4),imagesc(C);title('covariance')
+
+%% Compute the eigen values and vecters 
+% Calculate small dimension to compute the faces needed to go back to higher 
+% dimension. 
+[Veigvec, Deigval]  = eig(C);% v M*M e M*M only diagonal 4 eigen values
+% eigan face in large dimension  A*veigvec is eigen vector of Clarge
+Vlarge = A*Veigvec;% 2500*M*M*M  =2500 *M
+% reshape to eigen face
+eigenfaces=[];
+for k=1:M
+    c  = Vlarge(:,k);
+    eigenfaces{k} = reshape(c,N,N);
+end
+x=diag(Deigval);
+[xc,xci]=sort(x,'descend');% largest eigenval
+z  = [eigenfaces{xci(1)} eigenfaces{xci(2)} 
+    eigenfaces{xci(3)} eigenfaces{xci(4)}]; 
+figure(5),imshow(z,'Initialmagnification','fit');title('eigenfaces')
+%figure(99),plot(z);
+% weights
+nsel = 4; % select  eigen faces
+for mi =1:M  % image number
+  for k=1:nsel   % eigen face for coeff number
+    wi(mi,k) =   sum(A(:,mi).* eigenfaces{xci(k)}(:)) ;
+    %figure, plot(wi(mi,k));title('weight plots');
+  end
+end
+figure(001),plot(mi),plot(k),plot(wi);
+
+%% Facial Recognition
+% This task is performed exclusively on the faces from the original smaller
+% dataset given with the assignment.  I wanted to be able to determine if 
+% the tests were being performed on the correct images from the enrolled set of
+% images.  The program was able to match all of the face images with their
+% hosts.  I have been unable to determine if the program was able to make
+% any wrond detections because of the accuracy model I gave it to
+% calculate.
+
+%% Classify image 1
+%There wasn't much suprise to the results here.  The matching was obvious
+%and didn't tell me much after the application completed itself.  However,
+%This might change after I use a second image to see the results.
+
+% folder work C:\Users\michaels.DSI\Desktop\faces\class\
+imlist = dir('./enroll/*.png'); % List folders contents and returns attributes about enroll
+%im = imread(['./enroll/',imlist(1).name]);
+testFaceim1 = imread(['./enroll/',imlist(1).name]);
+testFaceim1  = mat2gray(testFaceim1);
+testFaceim1 = imresize(testFaceim1,[N N]);
+testFaceim1   =  im2single(testFaceim1);
+%testFaceim1 =  st.data{1}; test
+figure(6), imshow(testFaceim1,'Initialmagnification','fit'); 
+title('new test face img1')
+Aface = testFaceim1(:)-avImg(:); % normilized face
+for(tt=1:nsel)
+  wface(tt)  =  sum(Aface.* eigenfaces{xci(tt)}(:)) ;
+end
+figure, plot(wface); title('Weight of image 1');
+
+% compute distance
+diffWeight = zeros(M);
+for mi=1:M  
+    fsumcur=0;
+    for(tt=1:nsel)
+        fsumcur = fsumcur + (wface(tt)^2 - wi(mi,tt)^2);
+    end
+    diffWeight(mi) =   sqrt( fsumcur); 
+end
+num_imt = length(imlist);
+
+% Calculation for CMC curve
+for tt = (1:M)
+    cmc(tt) = sum(diffWeight(1:tt))/num_imt;
+end
+    figure(98),plot(cmc); title('CMC CURVE img1') 
+    %plot(diffWeights(:,2));
+
+%% Classify image 2
+% This portion of the code is awesome to me.  It tells me that I achieved
+% face recognition in some respect.  The algorithm was still able to locate
+% this gentlemans face even though the original image was distorted.
+% Unfortunately I did not perform the affect of comparing the images with
+% the CMC curve to test for accuracy of the images.  Despite my results, I
+% thouroughly enjoyed the sucess of some aspect of face recognition
+% occuring.
+
+imlist2 = dir('./enroll/*.png'); % List folders contents and returns attributes about enroll
+%im = imread(['./enroll/',imlist(1).name]);
+testFaceim2 = imread(['./enroll/',imlist2(2).name]);
+%testFaceim2 = imread('100_2120.jpg','jpg');
+testFaceim2 = mat2gray(testFaceim2);
+testFaceim2 = imresize(testFaceim2,[N N]);
+testFaceim2 = im2single(testFaceim2);
+figure(7), imshow(testFaceim2,'Initialmagnification','fit'); 
+title('test face img2')
+Aface = testFaceim2(:)-avImg(:);
+for(tt=1:nsel)
+  wface(tt)  =  sum(Aface.* eigenfaces{xci(tt)}(:)) ;
+end
+figure(999),plot(wface); title('Wieght of img 2');
+
+% compute distance
+for mi=1:M  
+    fsumcur=0;
+    for(tt=1:nsel)
+        fsumcur = fsumcur + (wface(tt) - wi(mi,tt)).^2;
+    end
+    diffWeight(mi) = sqrt(fsumcur);
+end
+
+num_imt = length(imlist2);
+
+% Calculation for CMC curve
+for tt = 1:10
+    cmc2(tt) = sum(diffWeight(1:tt))/num_imt;
+end
+    figure(97),plot(cmc2); title('CMC CURVE img2')
+
+
+%% Classify image 3
+% Like image 2, the algorithm matched up the appropriate faces.  Couldn't
+% be more ectatic.
+% folder work C:\Users\michaels.DSI\Desktop\faces\class\
+imlist3 = dir('./enroll/*.png'); % List folders contents and returns attributes about enroll
+%im = imread(['./enroll/',imlist(1).name]);
+testFaceim3 = imread(['./enroll/',imlist(3).name]);
+testFaceim3  = mat2gray(testFaceim3);
+testFaceim3 = imresize(testFaceim3,[N N]);
+testFaceim3   =  im2single(testFaceim3);
+%testFaceim1 =  st.data{1}; test
+Aface = testFaceim1(:)-avImg(:); % normilized face
+figure(9), imshow(testFaceim3,'Initialmagnification','fit'); 
+title('test face testFaceim3')
+Aface = testFaceim3(:)-avImg(:);
+wface=[];
+for(tt=1:nsel)
+  wface(tt)  =  sum(Aface.* eigenfaces{xci(tt)}(:)) ;
+end
+figure(8), plot(wface); title('Weight of image 3');
+
+% compute distance
+for mi=1:M  
+    fsumcur=0;
+    for(tt=1:nsel)
+        fsumcur = fsumcur + (wface(tt) -wi(mi,tt)).^2;
+    end
+    diffWeights(mi) = sqrt( fsumcur);
+end
+diffWeights = diffWeights.';
+
+num_imt = length(imlist3);
+
+% Calculation for CMC curve
+for tt = 1:M
+    cmc3(tt) = sum(diffWeights(1:tt))/num_imt;
+end
+    figure(970),plot(cmc3); title('CMC CURVE img3')
+##### SOURCE END #####
+--></body></html>
